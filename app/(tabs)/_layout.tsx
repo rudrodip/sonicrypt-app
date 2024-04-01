@@ -1,5 +1,4 @@
-import { Link, Tabs } from 'expo-router'
-import { Button } from 'tamagui'
+import { Tabs } from 'expo-router'
 import { Home, Send, ClipboardPen, Settings2, Box, Wallet } from '@tamagui/lucide-icons'
 
 export default function TabLayout() {
@@ -8,13 +7,8 @@ export default function TabLayout() {
       <Tabs.Screen
         name="index"
         options={{
-          title: "Sonicrypt",
+          headerShown: false,
           tabBarIcon: ({ color }) => <Home color={color}>Home</Home>,
-          headerRight: () => (
-            <Link href="/modal" asChild>
-              <Button icon={Wallet} style={{marginRight: 5}}>Connect wallet</Button>
-            </Link>
-          ),
         }}
       />
       <Tabs.Screen
