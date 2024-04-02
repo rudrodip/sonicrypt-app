@@ -11,25 +11,26 @@ import {
 } from "@tamagui/lucide-icons";
 import { Link } from "expo-router";
 import QRCode from "react-native-qrcode-svg";
-import { useState, useContext } from "react";
-import ConfigContext from "../../context/config-context";
+import { useState } from "react";
+import { useConfig } from "../../context/config-context";
 import ConfigForm from "../../components/config-form";
 
 export default function Home() {
   const [tempWalletAddress, setTempWalletAddress] = useState("");
-  const configObj = useContext(ConfigContext);
-  const bluetoothStatus = configObj?.config.bleStatus;
-  const walletAddress = configObj?.config.walletAddress;
+  const { config, setConfig } = useConfig();
+
+  const bluetoothStatus = config.bleStatus;
+  const walletAddress = config.walletAddress;
 
   const clearData = () => {
-    configObj?.setConfig({
-      ...configObj.config,
+    setConfig({
+      ...config,
       walletAddress: "",
       wifiPassword: "",
       wifiSSID: "",
-    })
+    });
     setTempWalletAddress("");
-  }
+  };
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View style={styles.cardContainer}>
@@ -85,7 +86,12 @@ export default function Home() {
             </Button>
           </View>
           <Button style={styles.qrCodeGenerateButton} onPress={clearData}>
-            <View display="flex" flexDirection="row" alignItems="center" gap={5}>
+            <View
+              display="flex"
+              flexDirection="row"
+              alignItems="center"
+              gap={5}
+            >
               <Text>Refresh</Text>
               <RefreshCcw size={20} />
             </View>
@@ -94,9 +100,14 @@ export default function Home() {
             style={styles.qrCodeGenerateButton}
             onPress={() => setTempWalletAddress(walletAddress || "")}
           >
-            <View display="flex" flexDirection="row" alignItems="center" gap={5}>
-            <Text>Update QR</Text>
-            <QrCode size={20} />
+            <View
+              display="flex"
+              flexDirection="row"
+              alignItems="center"
+              gap={5}
+            >
+              <Text>Update QR</Text>
+              <QrCode size={20} />
             </View>
           </Button>
         </View>
