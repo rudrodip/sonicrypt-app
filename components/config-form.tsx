@@ -41,6 +41,7 @@ export default function ConfigForm() {
 
     if (device && serviceUUID && characteristicUUID) {
       await writeToDevice(device, serviceUUID, characteristicUUID, message);
+      await writeToDevice(device, serviceUUID, characteristicUUID, "end");
     }
   }
 
@@ -186,6 +187,7 @@ const InputWithLabel = ({ configKey, label, placeholder }: InputProps) => {
         onChangeText={(val) =>
           configObj?.setConfig({ ...configObj.config, [configKey]: val })
         }
+        value={configObj?.config[configKey] as string}
       />
     </View>
   );
