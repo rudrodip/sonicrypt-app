@@ -14,9 +14,12 @@ import QRCode from "react-native-qrcode-svg";
 import { useState } from "react";
 import { useConfig } from "../../context/config-context";
 import ConfigForm from "../../components/config-form";
+import { useAuthorization } from "../../utils/useAuthorization";
+import WalletConnectButton from "../../components/wallet-connect-button";
 
 export default function Home() {
-  const [tempWalletAddress, setTempWalletAddress] = useState("");
+  const { selectedAccount } = useAuthorization();
+  const [tempWalletAddress, setTempWalletAddress] = useState(selectedAccount?.address || "");
   const { config, setConfig } = useConfig();
 
   const bluetoothStatus = config.bleStatus;
@@ -25,11 +28,9 @@ export default function Home() {
   const clearData = () => {
     setConfig({
       ...config,
-      walletAddress: "",
       wifiPassword: "",
       wifiSSID: "",
     });
-    setTempWalletAddress("");
   };
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -78,12 +79,7 @@ export default function Home() {
                 )}
               </Button>
             </Link>
-            <Button
-              style={styles.button}
-              backgroundColor={walletAddress ? "$color" : "$background"}
-            >
-              <Wallet2 color={walletAddress ? "$background" : "$color"} />
-            </Button>
+           <WalletConnectButton />
           </View>
           <Button style={styles.qrCodeGenerateButton} onPress={clearData}>
             <View
