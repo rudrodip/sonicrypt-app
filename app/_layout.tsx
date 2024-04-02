@@ -73,6 +73,12 @@ function RootLayoutNav() {
                     headerTitle: "Connect to device",
                   }}
                 />
+                <Stack.Screen
+                  name="[signature]"
+                  options={{
+                    headerTitle: "Transaction details",
+                  }}
+                />
               </Stack>
             </ToastProvider>
           </ThemeProvider>
