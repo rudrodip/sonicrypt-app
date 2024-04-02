@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Device } from "react-native-ble-plx";
+import { useAuthorization } from "../utils/useAuthorization";
 
 export type Config = {
     device: Device | null;
@@ -20,6 +21,7 @@ type ConfigContextType = {
 const ConfigContext = React.createContext<ConfigContextType | undefined>(undefined);
 
 export const ConfigProvider = ({ children }: { children: React.ReactNode }) => {
+    const { selectedAccount } = useAuthorization();
     const [config, setConfig] = useState<Config>({
         device: null,
         bleStatus: "off",
@@ -27,7 +29,7 @@ export const ConfigProvider = ({ children }: { children: React.ReactNode }) => {
         bleCharacteristicUUID: "",
         wifiSSID: "",
         wifiPassword: "",
-        walletAddress: "",
+        walletAddress: selectedAccount?.address || "",
         network: "mainnet-beta",
     });
 
