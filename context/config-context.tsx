@@ -1,6 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
+import { Device } from "react-native-ble-plx";
 
 export type Config = {
+    device: Device | null;
+    bleStatus: "off" | "connected" | "disconnected";
     bleServiceUUID: string;
     bleCharacteristicUUID: string;
     wifiSSID: string;
@@ -18,6 +21,8 @@ const ConfigContext = React.createContext<ConfigContextType | undefined>(undefin
 
 export const ConfigProvider = ({ children }: { children: React.ReactNode }) => {
     const [config, setConfig] = useState<Config>({
+        device: null,
+        bleStatus: "off",
         bleServiceUUID: "",
         bleCharacteristicUUID: "",
         wifiSSID: "",
