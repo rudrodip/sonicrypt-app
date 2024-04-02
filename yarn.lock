@@ -5519,6 +5519,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/react-native-base64@npm:^0":
+  version: 0.2.2
+  resolution: "@types/react-native-base64@npm:0.2.2"
+  checksum: fa3b730b21cff86d026c3a867e3dabe59482db02d128dd69a42e69016a699d426938b48d3b935a47ae6493e9c9de73ba75a5ce2bef8608c2b94254e5a0debbb1
+  languageName: node
+  linkType: hard
+
 "@types/react-native-get-random-values@npm:^1":
   version: 1.8.2
   resolution: "@types/react-native-get-random-values@npm:1.8.2"
@@ -11639,6 +11646,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-native-base64@npm:^0.2.1":
+  version: 0.2.1
+  resolution: "react-native-base64@npm:0.2.1"
+  checksum: 0dd8b122e9afacb715c0e82b91f429f2fc68de19301dc23b189801f707bc7216a3c3aea5230d2a3c0cfb2fde2e6d832df83782bf5406d8cca6c195d14832b8c5
+  languageName: node
+  linkType: hard
+
 "react-native-ble-plx@npm:^3.1.2":
   version: 3.1.2
   resolution: "react-native-ble-plx@npm:3.1.2"
@@ -12690,6 +12704,7 @@ __metadata:
     "@tamagui/lucide-icons": "npm:^1.92.1"
     "@tamagui/metro-plugin": "npm:^1.92.1"
     "@types/react": "npm:~18.2.14"
+    "@types/react-native-base64": "npm:^0"
     "@types/react-native-get-random-values": "npm:^1"
     babel-preset-expo: "npm:^10.0.1"
     bs58: "npm:^5.0.0"
@@ -12709,6 +12724,7 @@ __metadata:
     react-dom: "npm:^18.2.0"
     react-helmet-async: "npm:~2.0.4"
     react-native: "npm:0.73.4"
+    react-native-base64: "npm:^0.2.1"
     react-native-ble-plx: "npm:^3.1.2"
     react-native-get-random-values: "npm:^1.11.0"
     react-native-qrcode-svg: "npm:^6.3.0"
