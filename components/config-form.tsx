@@ -26,13 +26,12 @@ export default function ConfigForm() {
 
     const wifiSSID = config.wifiSSID;
     const wifiPassword = config.wifiPassword;
-    const walletAddress = config.walletAddress;
     const network = config.network;
 
     const message = JSON.stringify({
       ssid: wifiSSID,
       password: wifiPassword,
-      address: walletAddress,
+      address: selectedAccount?.publicKey.toBase58() || config.walletAddress,
       net: network,
     });
 
