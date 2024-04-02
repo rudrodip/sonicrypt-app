@@ -10,21 +10,44 @@ import {
   Adapt,
   Sheet,
   YStack,
-  XStack,
 } from "tamagui";
 import { Check, ChevronDown, ChevronUp } from "@tamagui/lucide-icons";
 import React, { useContext } from "react";
 import { StyleSheet } from "react-native";
 import ConfigContext from "../context/config-context";
 import type { Config } from "../context/config-context";
+import { writeToDevice } from "../app/bluetooth-modal";
 
 export default function ConfigForm() {
   const configObj = useContext(ConfigContext);
 
+  const sendMessageToDevice = async () => {
+    console.log(configObj?.config);
+    const device = configObj?.config.device;
+    const serviceUUID = configObj?.config.bleServiceUUID;
+    const characteristicUUID = configObj?.config.bleCharacteristicUUID;
+
+    const wifiSSID = configObj?.config.wifiSSID;
+    const wifiPassword = configObj?.config.wifiPassword;
+    const walletAddress = configObj?.config.walletAddress;
+    const network = configObj?.config.network;
+
+    const message = JSON.stringify({
+      ssid: wifiSSID,
+      password: wifiPassword,
+      address: walletAddress,
+      net: network,
+    })
+
+    if (device && serviceUUID && characteristicUUID) {
+      await writeToDevice(device, serviceUUID, characteristicUUID, message);
+    }
+  }
+
   return (
     <View style={styles.formContainer}>
       <Text style={{ fontSize: 25, fontWeight: "bold" }}>Configuration</Text>
-      <Form onSubmit={() => console.log(configObj?.config)}>
+      <Form onSubmit={sendMessageToDevice}>
         <InputWithLabel
           configKey="wifiSSID"
           label="Wifi SSID"
@@ -133,7 +156,13 @@ export default function ConfigForm() {
           </Select.Content>
         </Select>
         <FormTrigger asChild>
-          <Button style={{ marginTop: 15 }} backgroundColor="$accentColor" color="$background">Submit</Button>
+          <Button 
+            style={{ marginTop: 15 }} 
+            backgroundColor="$color" 
+            color="$background"
+          >
+            Submit
+          </Button>
         </FormTrigger>
       </Form>
     </View>
