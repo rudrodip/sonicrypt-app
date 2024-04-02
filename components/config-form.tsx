@@ -13,9 +13,11 @@ import { useConfig } from "../context/config-context";
 import type { Config } from "../context/config-context";
 import { writeToDevice } from "../app/bluetooth-modal";
 import SelectItems from "./select-items";
+import { useAuthorization } from "../utils/useAuthorization";
 
 export default function ConfigForm() {
   const { config, setConfig } = useConfig();
+  const { selectedAccount } = useAuthorization();
 
   const sendMessageToDevice = async () => {
     const device = config.device;
@@ -77,6 +79,7 @@ export default function ConfigForm() {
           configKey="walletAddress"
           label="Wallet address"
           placeholder="your wallet address"
+          value={selectedAccount?.publicKey.toBase58()}
         />
         <SelectItems 
           label="Network"
@@ -99,11 +102,12 @@ export default function ConfigForm() {
 
 type InputProps = {
   configKey: keyof Config;
+  value?: any;
   label: string;
   placeholder: string;
 };
 
-const InputWithLabel = ({ configKey, label, placeholder }: InputProps) => {
+const InputWithLabel = ({ configKey, value, label, placeholder }: InputProps) => {
   const { config, setConfig } = useConfig();
 
   return (
@@ -112,7 +116,7 @@ const InputWithLabel = ({ configKey, label, placeholder }: InputProps) => {
       <Input
         placeholder={placeholder}
         onChangeText={(val) => setConfig({ ...config, [configKey]: val })}
-        value={config[configKey] as string}
+        value={value || config[configKey]}
       />
     </View>
   );
