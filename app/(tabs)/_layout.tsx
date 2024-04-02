@@ -1,9 +1,15 @@
 import { Tabs } from 'expo-router'
-import { Home, Send, ClipboardPen, Settings2, Box, Wallet } from '@tamagui/lucide-icons'
+import { useTheme } from 'tamagui'
+import { Home, Send, ClipboardPen, Settings2, Box } from '@tamagui/lucide-icons'
 
 export default function TabLayout() {
+  const theme = useTheme()
   return (
-    <Tabs>
+    <Tabs
+      screenOptions={{
+        tabBarActiveTintColor: theme.color.val,
+      }}
+    >
       <Tabs.Screen
         name="index"
         options={{
