@@ -1,30 +1,27 @@
 import { ChevronDown } from "@tamagui/lucide-icons";
 import { Accordion, Square, ScrollView, View, Text, Button } from "tamagui";
-import {
-  Alert,
-  PermissionsAndroid,
-  Platform,
-} from "react-native";
+import { Alert, PermissionsAndroid, Platform } from "react-native";
 import { BleManager, Device, Service } from "react-native-ble-plx";
-import { useContext, useState, useEffect } from "react";
-import ConfigContext from "../context/config-context";
+import { useState, useEffect } from "react";
+import { useConfig } from "../context/config-context";
 import RenderCharacteristicsComponent from "../components/render-characteristics";
 import base64 from "react-native-base64";
 
 const bleManager = new BleManager();
 
 export default function ModalScreen() {
-  const configContext = useContext(ConfigContext);
+  const { config, setConfig } = useConfig();
   const [isScanning, setIsScanning] = useState(false);
   const [devices, setDevices] = useState<Device[]>([]);
   const [connectedDevice, setConnectedDevice] = useState<Device | null>(null);
   const [services, setServices] = useState<Service[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const subscription = bleManager.onStateChange((state) => {
       if (state === "PoweredOn") {
         requestPermissions(() => setIsScanning(true));
-        configContext?.setConfig({ ...configContext.config, bleStatus: "disconnected" })
+        setConfig({ ...config, bleStatus: "disconnected" });
       } else {
         Alert.alert("BLE is not enabled");
       }
@@ -65,13 +62,15 @@ export default function ModalScreen() {
     try {
       await device.connect();
       setConnectedDevice(device);
-      configContext?.setConfig({ ...configContext.config, bleStatus: "connected" })
-      configContext?.setConfig({ ...configContext.config, device: device })
+      setConfig({ ...config, bleStatus: "connected" });
+      setConfig({ ...config, device: device });
 
       await bleManager.connectToDevice(device.id);
       await device.discoverAllServicesAndCharacteristics();
+
       const services = await device.services();
       setServices(services);
+      setLoading(false);
     } catch (error) {
       console.error(error);
     }
@@ -105,7 +104,7 @@ export default function ModalScreen() {
         type="multiple"
       >
         {devices.length === 0 && (
-          <Text fontSize="$8" textAlign="center">
+          <Text fontSize="$5" textAlign="center">
             No devices found
           </Text>
         )}
@@ -144,25 +143,31 @@ export default function ModalScreen() {
                 )}
               </Accordion.Trigger>
               <Accordion.Content borderRadius="$5">
-                {services.reverse().map((service) => {
-                  return (
-                    <View key={service.uuid}>
-                      <View
-                        display="flex"
-                        flexDirection="row"
-                        justifyContent="space-between"
-                        alignItems="center"
-                        marginVertical="$2"
-                        borderBottomWidth="$0.25"
-                        borderColor={"$color"}
-                      >
-                        <Text fontSize="$3">{service.uuid}</Text>
-                        <ChevronDown size="$1" />
+                {!loading ? (
+                  services.reverse().map((service) => {
+                    return (
+                      <View key={service.uuid}>
+                        <View
+                          display="flex"
+                          flexDirection="row"
+                          justifyContent="space-between"
+                          alignItems="center"
+                          marginVertical="$2"
+                          borderBottomWidth="$0.25"
+                          borderColor={"$color"}
+                        >
+                          <Text fontSize="$3">{service.uuid}</Text>
+                          <ChevronDown size="$1" />
+                        </View>
+                        <RenderCharacteristicsComponent service={service} />
                       </View>
-                      <RenderCharacteristicsComponent service={service} />
-                    </View>
-                  );
-                })}
+                    );
+                  })
+                ) : (
+                  <Text textAlign="center" margin="$5">
+                    Loading...
+                  </Text>
+                )}
               </Accordion.Content>
               {connectedDevice?.id === device.id && (
                 <Button
@@ -228,13 +233,15 @@ export const writeToDevice = async (
   device: Device,
   serviceUUID: string,
   characteristicUUID: string,
-  message: string,
+  message: string
 ) => {
   const maxMessageLength = 20;
 
   try {
     // divide message into chunks
-    const messageChunks = message.match(new RegExp(`.{1,${maxMessageLength}}`, "g"));
+    const messageChunks = message.match(
+      new RegExp(`.{1,${maxMessageLength}}`, "g")
+    );
     if (!messageChunks) {
       return;
     }
@@ -244,7 +251,7 @@ export const writeToDevice = async (
       await device.writeCharacteristicWithResponseForService(
         serviceUUID,
         characteristicUUID,
-        base64.encode(chunk),
+        base64.encode(chunk)
       );
     }
   } catch (error) {
