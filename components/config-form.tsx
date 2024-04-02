@@ -12,38 +12,38 @@ import {
   YStack,
 } from "tamagui";
 import { Check, ChevronDown, ChevronUp } from "@tamagui/lucide-icons";
-import React, { useContext } from "react";
+import React from "react";
 import { StyleSheet } from "react-native";
-import ConfigContext from "../context/config-context";
+import { useConfig } from "../context/config-context";
 import type { Config } from "../context/config-context";
 import { writeToDevice } from "../app/bluetooth-modal";
 
 export default function ConfigForm() {
-  const configObj = useContext(ConfigContext);
+  const { config, setConfig } = useConfig();
 
   const sendMessageToDevice = async () => {
-    console.log(configObj?.config);
-    const device = configObj?.config.device;
-    const serviceUUID = configObj?.config.bleServiceUUID;
-    const characteristicUUID = configObj?.config.bleCharacteristicUUID;
+    console.log(config);
+    const device = config.device;
+    const serviceUUID = config.bleServiceUUID;
+    const characteristicUUID = config.bleCharacteristicUUID;
 
-    const wifiSSID = configObj?.config.wifiSSID;
-    const wifiPassword = configObj?.config.wifiPassword;
-    const walletAddress = configObj?.config.walletAddress;
-    const network = configObj?.config.network;
+    const wifiSSID = config.wifiSSID;
+    const wifiPassword = config.wifiPassword;
+    const walletAddress = config.walletAddress;
+    const network = config.network;
 
     const message = JSON.stringify({
       ssid: wifiSSID,
       password: wifiPassword,
       address: walletAddress,
       net: network,
-    })
+    });
 
     if (device && serviceUUID && characteristicUUID) {
       await writeToDevice(device, serviceUUID, characteristicUUID, message);
       await writeToDevice(device, serviceUUID, characteristicUUID, "end");
     }
-  }
+  };
 
   return (
     <View style={styles.formContainer}>
@@ -67,7 +67,7 @@ export default function ConfigForm() {
         <Select
           value="mainnet"
           onValueChange={(val: "mainnet" | "devnet" | "testnet") =>
-            configObj?.setConfig({ ...configObj.config, network: val })
+            setConfig({ ...config, network: val })
           }
         >
           <Label>Network</Label>
@@ -115,7 +115,7 @@ export default function ConfigForm() {
             <Select.Viewport
               // to do animations:
               animation="quick"
-              animateOnly={['transform', 'opacity']}
+              animateOnly={["transform", "opacity"]}
               enterStyle={{ o: 0, y: -10 }}
               exitStyle={{ o: 0, y: 10 }}
               minWidth={200}
@@ -157,9 +157,9 @@ export default function ConfigForm() {
           </Select.Content>
         </Select>
         <FormTrigger asChild>
-          <Button 
-            style={{ marginTop: 15 }} 
-            backgroundColor="$color" 
+          <Button
+            style={{ marginTop: 15 }}
+            backgroundColor="$color"
             color="$background"
           >
             Submit
@@ -177,17 +177,15 @@ type InputProps = {
 };
 
 const InputWithLabel = ({ configKey, label, placeholder }: InputProps) => {
-  const configObj = useContext(ConfigContext);
+  const { config, setConfig } = useConfig();
 
   return (
     <View style={styles.input}>
       <Label style={{ fontSize: 15 }}>{label}</Label>
       <Input
         placeholder={placeholder}
-        onChangeText={(val) =>
-          configObj?.setConfig({ ...configObj.config, [configKey]: val })
-        }
-        value={configObj?.config[configKey] as string}
+        onChangeText={(val) => setConfig({ ...config, [configKey]: val })}
+        value={config[configKey] as string}
       />
     </View>
   );
