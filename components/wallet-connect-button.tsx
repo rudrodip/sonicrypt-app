@@ -7,12 +7,17 @@ import { useState, useCallback } from "react";
 
 export default function WalletConnectButton() {
   const { authorizeSession, selectedAccount } = useAuthorization();
-  const { connect } = useMobileWallet();
+  const { connect, disconnect } = useMobileWallet();
   const [authorizationInProgress, setAuthorizationInProgress] = useState(false);
 
   const handleConnectPress = useCallback(async () => {
     try {
       if (authorizationInProgress) {
+        return;
+      }
+
+      if (selectedAccount) {
+        await disconnect();
         return;
       }
       setAuthorizationInProgress(true);
