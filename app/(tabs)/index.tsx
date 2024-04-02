@@ -21,23 +21,14 @@ export default function Home() {
   const { selectedAccount } = useAuthorization();
   const [tempWalletAddress, setTempWalletAddress] = useState(selectedAccount?.address || "");
   const { config, setConfig } = useConfig();
-
   const bluetoothStatus = config.bleStatus;
-  const walletAddress = config.walletAddress;
-
-  const clearData = () => {
-    setConfig({
-      ...config,
-      wifiPassword: "",
-      wifiSSID: "",
-    });
-  };
+  
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View style={styles.cardContainer}>
         <View style={styles.qrContainer}>
           {tempWalletAddress !== "" ? (
-            <QRCode value={tempWalletAddress} size={200} />
+            <QRCode value={`sol:${selectedAccount?.publicKey.toBase58()}` || `sol:${tempWalletAddress}`} size={200} />
           ) : (
             <Image
               source={require("../../assets/images/logo.png")}
@@ -81,20 +72,19 @@ export default function Home() {
             </Link>
            <WalletConnectButton />
           </View>
-          <Button style={styles.qrCodeGenerateButton} onPress={clearData}>
+          <Button style={styles.qrCodeGenerateButton} disabled>
             <View
               display="flex"
-              flexDirection="row"
-              alignItems="center"
+              alignItems="flex-end"
               gap={5}
             >
-              <Text>Refresh</Text>
-              <RefreshCcw size={20} />
+              <Text fontFamily="$mono" fontSize="$3">Bluetooth {bluetoothStatus}</Text>
+              <Text fontFamily="$mono" fontSize="$3">{selectedAccount ? "Wallet connected" : "Connect wallet"}</Text>
             </View>
           </Button>
           <Button
             style={styles.qrCodeGenerateButton}
-            onPress={() => setTempWalletAddress(walletAddress || "")}
+            onPress={() => setTempWalletAddress(selectedAccount?.publicKey.toBase58() || "")}
           >
             <View
               display="flex"
