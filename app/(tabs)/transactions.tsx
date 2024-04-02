@@ -1,6 +1,6 @@
 import { Button, Separator, Text, View } from "tamagui";
 import { ExternalLink } from "@tamagui/lucide-icons";
-import { FlatList } from "react-native";
+import { FlatList, Alert } from "react-native";
 import {
   Connection,
   PublicKey,
@@ -9,9 +9,11 @@ import {
 } from "@solana/web3.js";
 import { useEffect, useState } from "react";
 import SelectItems from "../../components/select-items";
-import { Link } from "expo-router";
+import { Link, Redirect } from "expo-router";
+import { useAuthorization } from "../../utils/useAuthorization";
 
 export default function Transactions() {
+  const { selectedAccount } = useAuthorization();
   const [refreshing, setRefreshing] = useState(false);
   const [txs, setTxs] = useState<ConfirmedSignatureInfo[]>([]);
   const [error, setError] = useState<string | null>(null);
@@ -20,33 +22,33 @@ export default function Transactions() {
     "mainnet-beta"
   );
 
-  const connection = new Connection(clusterApiUrl(network), "confirmed");
-  // const publicKey = new PublicKey(config.walletAddress);
-  const publicKey = new PublicKey(
-    "7LwsCzvPoJJD8d15yiH9D411RPpQJTb3QTePR7HgBQKH"
-  );
-
-  const fetchTransactions = async () => {
-    try {
-      setRefreshing(true);
-      const transactions = await connection.getConfirmedSignaturesForAddress2(
-        publicKey,
-        {
-          limit,
-        }
-      );
-      setTxs(transactions);
-    } catch (error) {
-      setError(error as string);
-      console.log(error);
-    } finally {
-      setRefreshing(false);
-    }
-  };
-
   useEffect(() => {
-    fetchTransactions();
-  }, [network, limit]);
+    if (selectedAccount) {
+      const connection = new Connection(clusterApiUrl(network), "confirmed");
+      const publicKey = new PublicKey(selectedAccount?.publicKey.toBase58());
+
+      const fetchTransactions = async () => {
+        try {
+          setRefreshing(true);
+          const transactions = await connection.getConfirmedSignaturesForAddress2(
+            publicKey,
+            {
+              limit,
+            }
+          );
+          setTxs(transactions);
+        } catch (error) {
+          setError(error as string);
+          console.log(error);
+        } finally {
+          setRefreshing(false);
+        }
+      };
+    
+
+      fetchTransactions();
+    }
+  }, [network, limit, selectedAccount]);
 
   const renderTxs = ({ item }: { item: ConfirmedSignatureInfo }) => {
     return (
@@ -92,7 +94,7 @@ export default function Transactions() {
         renderItem={renderTxs}
         keyExtractor={(item) => item.signature}
         refreshing={refreshing}
-        onRefresh={fetchTransactions}
+        onRefresh={() => setRefreshing(true)}
         style={{
           marginTop: 10,
         }}
