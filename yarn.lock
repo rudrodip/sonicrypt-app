@@ -2798,6 +2798,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@react-native-async-storage/async-storage@npm:^1.23.1":
+  version: 1.23.1
+  resolution: "@react-native-async-storage/async-storage@npm:1.23.1"
+  dependencies:
+    merge-options: "npm:^3.0.4"
+  peerDependencies:
+    react-native: ^0.0.0-0 || >=0.60 <1.0
+  checksum: 9d0acc7edb0ba9ee414d6e62c656e5d571c9d9615e7e9f4748865b965178998f2e73786b8050387ada00ddb6faaca97b5cf2e010ceaeebe91571991364a0f515
+  languageName: node
+  linkType: hard
+
 "@react-native-community/cli-clean@npm:12.3.2":
   version: 12.3.2
   resolution: "@react-native-community/cli-clean@npm:12.3.2"
@@ -5761,6 +5772,24 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@tanstack/query-core@npm:5.28.12":
+  version: 5.28.12
+  resolution: "@tanstack/query-core@npm:5.28.12"
+  checksum: 1ae296f952618c66f223070c7f1dcce82839487f040f4f7f433f832622a66b454edfdb670aeec29fe15fef78c59b0d6defbb3a4b1c663619e4934017e14ec2b6
+  languageName: node
+  linkType: hard
+
+"@tanstack/react-query@npm:^5.28.12":
+  version: 5.28.12
+  resolution: "@tanstack/react-query@npm:5.28.12"
+  dependencies:
+    "@tanstack/query-core": "npm:5.28.12"
+  peerDependencies:
+    react: ^18.0.0
+  checksum: 9c72a8b30b87e4184a7011352623855812183fe8f542fb90bd7637ae98ce1d1e90aef844ebc919facb9e04a15e1352e87a689237219c175f0b2adfa3e8754fac
+  languageName: node
+  linkType: hard
+
 "@types/connect@npm:^3.4.33":
   version: 3.4.38
   resolution: "@types/connect@npm:3.4.38"
@@ -6547,7 +6576,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"base64-js@npm:^1.2.3, base64-js@npm:^1.3.1, base64-js@npm:^1.5.1":
+"base64-js@npm:^1.2.3, base64-js@npm:^1.3.0, base64-js@npm:^1.3.1, base64-js@npm:^1.5.1":
   version: 1.5.1
   resolution: "base64-js@npm:1.5.1"
   checksum: 669632eb3745404c2f822a18fc3a0122d2f9a7a13f7fb8b5823ee19d1d2ff9ee5b52c53367176ea4ad093c332fd5ab4bd0ebae5a8e27917a4105a4cfc86b1005
@@ -8140,6 +8169,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"expo-crypto@npm:^12.8.1":
+  version: 12.8.1
+  resolution: "expo-crypto@npm:12.8.1"
+  dependencies:
+    base64-js: "npm:^1.3.0"
+  peerDependencies:
+    expo: "*"
+  checksum: a98b854aef4dce2a3432fcf6cd1a2be2a79715690019a25ac114f7333eacda1cfbe3295e9dabe200bfe7adc119ef43665b5d6b38ed4c4c1692c34d2c498b3425
+  languageName: node
+  linkType: hard
+
 "expo-file-system@npm:~16.0.0":
   version: 16.0.3
   resolution: "expo-file-system@npm:16.0.3"
@@ -9485,6 +9525,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"is-plain-obj@npm:^2.1.0":
+  version: 2.1.0
+  resolution: "is-plain-obj@npm:2.1.0"
+  checksum: cec9100678b0a9fe0248a81743041ed990c2d4c99f893d935545cfbc42876cbe86d207f3b895700c690ad2fa520e568c44afc1605044b535a7820c1d40e38daa
+  languageName: node
+  linkType: hard
+
 "is-plain-object@npm:^2.0.4":
   version: 2.0.4
   resolution: "is-plain-object@npm:2.0.4"
@@ -10507,6 +10554,15 @@ __metadata:
   version: 0.2.0
   resolution: "memory-cache@npm:0.2.0"
   checksum: 583573d75702123e29a27c0323934ca9a468e0b530845714be7b584dcef8a38085d8f7bb97c2fe8eceb021e73dd6edaad1750f2b9f0d87732e634871302fa154
+  languageName: node
+  linkType: hard
+
+"merge-options@npm:^3.0.4":
+  version: 3.0.4
+  resolution: "merge-options@npm:3.0.4"
+  dependencies:
+    is-plain-obj: "npm:^2.1.0"
+  checksum: d86ddb3dd6e85d558dbf25dc944f3527b6bacb944db3fdda6e84a3f59c4e4b85231095f58b835758b9a57708342dee0f8de0dffa352974a48221487fe9f4584f
   languageName: node
   linkType: hard
 
@@ -13052,6 +13108,7 @@ __metadata:
     "@babel/core": "npm:^7.23.3"
     "@config-plugins/react-native-ble-plx": "npm:^7.0.0"
     "@expo/metro-runtime": "npm:~3.1.3"
+    "@react-native-async-storage/async-storage": "npm:^1.23.1"
     "@react-navigation/native": "npm:^6.0.2"
     "@solana-mobile/mobile-wallet-adapter-protocol": "npm:^2.1.2"
     "@solana-mobile/mobile-wallet-adapter-protocol-web3js": "npm:^2.1.2"
@@ -13061,6 +13118,7 @@ __metadata:
     "@tamagui/lucide-icons": "npm:^1.92.1"
     "@tamagui/metro-plugin": "npm:^1.92.1"
     "@tamagui/toast": "npm:^1.94.1"
+    "@tanstack/react-query": "npm:^5.28.12"
     "@types/react": "npm:~18.2.14"
     "@types/react-native-base64": "npm:^0"
     "@types/react-native-get-random-values": "npm:^1"
@@ -13071,6 +13129,7 @@ __metadata:
     burnt: "npm:^0.12.2"
     expo: "npm:~50.0.6"
     expo-constants: "npm:^15.4.5"
+    expo-crypto: "npm:^12.8.1"
     expo-font: "npm:~11.10.2"
     expo-linear-gradient: "npm:^12.7.2"
     expo-linking: "npm:~6.2.1"
