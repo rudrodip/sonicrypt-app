@@ -41,9 +41,7 @@ function getAuthorizationFromAuthorizationResult(
 ): WalletAuthorization {
   let selectedAccount: Account;
   if (
-    // We have yet to select an account.
     previouslySelectedAccount == null ||
-    // The previously selected account is no longer in the set of authorized addresses.
     !authorizationResult.accounts.some(
       ({ address }) => address === previouslySelectedAccount.address
     )
@@ -67,7 +65,7 @@ function getPublicKeyFromAddress(address: Base64EncodedAddress): PublicKey {
 
 function cacheReviver(key: string, value: any) {
   if (key === "publicKey") {
-    return new PublicKey(value as PublicKeyInitData); // the PublicKeyInitData should match the actual data structure stored in AsyncStorage
+    return new PublicKey(value as PublicKeyInitData);
   } else {
     return value;
   }
@@ -95,8 +93,8 @@ async function persistAuthorization(
 }
 
 export const APP_IDENTITY = {
-  name: "Solana Mobile Expo Template",
-  uri: "https://fakedomain.com",
+  name: "Sonicrypt",
+  uri: "https://sonicrypt.vercel.app",
 };
 
 export function useAuthorization() {
@@ -144,9 +142,9 @@ export function useAuthorization() {
         chain: CHAIN_IDENTIFIER,
         auth_token: authorization?.authToken,
         sign_in_payload: {
-          domain: "yourdomain.com",
-          statement: "Sign into Expo Template App",
-          uri: "https://yourdomain.com",
+          domain: "sonicrypt.vercel.app",
+          statement: "Sign into Sonicrypt",
+          uri: "https://sonicrypt.vercel.app",
         },
       });
       return (await handleAuthorizationResult(authorizationResult))
