@@ -12,7 +12,9 @@ import { ToastProvider } from "@tamagui/toast";
 import "react-native-get-random-values";
 import { v4 as uuidv4 } from "uuid";
 import "../tamagui-web.css";
-
+import { ConnectionProvider } from "../utils/connection-provider";
+import { ClusterProvider } from "../utils/cluster-data-access";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { config } from "../tamagui.config";
 import { useFonts } from "expo-font";
 import { useEffect } from "react";
@@ -29,6 +31,7 @@ export const unstable_settings = {
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
+const queryClient = new QueryClient();
 
 export default function RootLayout() {
   const [interLoaded, interError] = useFonts({
@@ -54,36 +57,48 @@ function RootLayoutNav() {
   const colorScheme = useColorScheme();
 
   return (
-    <SafeAreaProvider>
-      <ConfigProvider>
-        <TamaguiProvider
-          config={config}
-          defaultTheme={colorScheme ? colorScheme : "light"}
-        >
-          <ThemeProvider
-            value={colorScheme === "dark" ? DarkTheme : DefaultTheme}
-          >
-            <ToastProvider>
-              <Stack>
-                <Stack.Screen name="(tabs)" options={{ headerShown: false, navigationBarHidden: true }} />
-                <Stack.Screen
-                  name="bluetooth-modal"
-                  options={{
-                    presentation: "modal",
-                    headerTitle: "Connect to device",
-                  }}
-                />
-                <Stack.Screen
-                  name="[signature]"
-                  options={{
-                    headerTitle: "Transaction details",
-                  }}
-                />
-              </Stack>
-            </ToastProvider>
-          </ThemeProvider>
-        </TamaguiProvider>
-      </ConfigProvider>
-    </SafeAreaProvider>
+    <QueryClientProvider client={queryClient}>
+      <SafeAreaProvider>
+        <ClusterProvider>
+          <ConnectionProvider>
+            <ConfigProvider>
+              <TamaguiProvider
+                config={config}
+                defaultTheme={colorScheme ? colorScheme : "light"}
+              >
+                <ThemeProvider
+                  value={colorScheme === "dark" ? DarkTheme : DefaultTheme}
+                >
+                  <ToastProvider>
+                    <Stack>
+                      <Stack.Screen
+                        name="(tabs)"
+                        options={{
+                          headerShown: false,
+                          navigationBarHidden: true,
+                        }}
+                      />
+                      <Stack.Screen
+                        name="bluetooth-modal"
+                        options={{
+                          presentation: "modal",
+                          headerTitle: "Connect to device",
+                        }}
+                      />
+                      <Stack.Screen
+                        name="[signature]"
+                        options={{
+                          headerTitle: "Transaction details",
+                        }}
+                      />
+                    </Stack>
+                  </ToastProvider>
+                </ThemeProvider>
+              </TamaguiProvider>
+            </ConfigProvider>
+          </ConnectionProvider>
+        </ClusterProvider>
+      </SafeAreaProvider>
+    </QueryClientProvider>
   );
 }
