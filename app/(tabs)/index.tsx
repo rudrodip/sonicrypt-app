@@ -1,4 +1,4 @@
-import { Text, View, ScrollView, Image } from "tamagui";
+import { Text, View, ScrollView, Image, Button } from "tamagui";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { StyleSheet, TouchableOpacity } from "react-native";
 import {
@@ -9,19 +9,14 @@ import {
 } from "@tamagui/lucide-icons";
 import { Link } from "expo-router";
 import QRCode from "react-native-qrcode-svg";
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import ConfigContext from "../../context/config-context";
 import ConfigForm from "../../components/config-form";
 
 export default function Home() {
-  const [bluetoothStatus, setBluetoothStatus] = useState<
-    "off" | "connected" | "disconnected"
-  >("off");
-  const [walletStatus, setWalletStatus] = useState<
-    "connected" | "disconnected"
-  >("disconnected");
-  const [walletAddress, setWalletAddress] = useState<string>("");
   const configObj = useContext(ConfigContext);
+  const bluetoothStatus = configObj?.config.bleStatus;
+  const walletAddress = configObj?.config.walletAddress;
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -51,46 +46,41 @@ export default function Home() {
             }}
           >
             <Link href="/bluetooth-modal" asChild>
-              <TouchableOpacity
-                style={{
-                  ...styles.button,
-                  backgroundColor:
-                    bluetoothStatus === "connected"
-                      ? "green"
-                      : bluetoothStatus === "off"
-                      ? "red"
-                      : "gray",
-                }}
+              <Button
+                style={styles.button}
+                backgroundColor={
+                  bluetoothStatus === "connected"
+                    ? "$color"
+                    : bluetoothStatus === "off"
+                    ? "$background"
+                    : "$backgroundHover"
+                }
               >
                 {bluetoothStatus === "connected" ? (
-                  <BluetoothConnected />
+                  <BluetoothConnected color="$background" />
                 ) : bluetoothStatus === "off" ? (
-                  <BluetoothOff />
+                  <BluetoothOff color="$color" />
                 ) : (
-                  <Bluetooth />
+                  <Bluetooth color="$color" />
                 )}
-              </TouchableOpacity>
+              </Button>
             </Link>
-            <TouchableOpacity
-              style={{
-                ...styles.button,
-                backgroundColor:
-                  walletStatus === "connected" ? "green" : "gray",
-              }}
-              onPress={() => setWalletAddress("idk man")}
+            <Button
+              style={styles.button}
+              backgroundColor={walletAddress ? "$color" : "$background"}
             >
-              <Wallet2 />
-            </TouchableOpacity>
+              <Wallet2 color={walletAddress ? "$background" : "$color"} />
+            </Button>
           </View>
-          <TouchableOpacity style={styles.qrCodeGenerateButton}>
+          <Button style={styles.qrCodeGenerateButton}>
             <Text>Refresh</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
+          </Button>
+          <Button
             style={styles.qrCodeGenerateButton}
-            disabled={walletStatus === "disconnected"}
+            disabled={!walletAddress}
           >
             <Text>Generate QR code</Text>
-          </TouchableOpacity>
+          </Button>
         </View>
       </View>
       <ScrollView>
@@ -137,8 +127,6 @@ const styles = StyleSheet.create({
   qrCodeGenerateButton: {
     width: "90%",
     height: "30%",
-    borderColor: "gray",
-    borderWidth: 1,
     borderRadius: 10,
     display: "flex",
     justifyContent: "center",
