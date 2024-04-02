@@ -9,7 +9,7 @@ export type Config = {
     wifiSSID: string;
     wifiPassword: string;
     walletAddress: string;
-    network: "mainnet" | "testnet" | "devnet";
+    network: "mainnet-beta" | "testnet" | "devnet";
 }
 
 type ConfigContextType = {
@@ -28,7 +28,7 @@ export const ConfigProvider = ({ children }: { children: React.ReactNode }) => {
         wifiSSID: "",
         wifiPassword: "",
         walletAddress: "",
-        network: "mainnet",
+        network: "mainnet-beta",
     });
 
     return (
