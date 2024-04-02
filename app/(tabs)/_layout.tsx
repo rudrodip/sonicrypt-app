@@ -44,10 +44,10 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="mock"
+        name="emulate"
         options={{
-          title: 'Mock',
-          tabBarIcon: ({ color }) => <Box color={color}>Mock</Box>,
+          title: 'Emulate',
+          tabBarIcon: ({ color }) => <Box color={color}>Emulate</Box>,
         }}
       />
     </Tabs>
