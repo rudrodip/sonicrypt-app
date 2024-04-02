@@ -8,7 +8,9 @@ import { useColorScheme } from "react-native";
 import { TamaguiProvider } from "tamagui";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { ConfigProvider } from "../context/config-context";
-
+import { ToastProvider } from "@tamagui/toast";
+import "react-native-get-random-values";
+import { v4 as uuidv4 } from "uuid";
 import "../tamagui-web.css";
 
 import { config } from "../tamagui.config";
@@ -61,10 +63,18 @@ function RootLayoutNav() {
           <ThemeProvider
             value={colorScheme === "dark" ? DarkTheme : DefaultTheme}
           >
-            <Stack>
-              <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-              <Stack.Screen name="bluetooth-modal" options={{ presentation: "modal", headerTitle: "Connect to device" }} />
-            </Stack>
+            <ToastProvider>
+              <Stack>
+                <Stack.Screen name="(tabs)" options={{ headerShown: false, navigationBarHidden: true }} />
+                <Stack.Screen
+                  name="bluetooth-modal"
+                  options={{
+                    presentation: "modal",
+                    headerTitle: "Connect to device",
+                  }}
+                />
+              </Stack>
+            </ToastProvider>
           </ThemeProvider>
         </TamaguiProvider>
       </ConfigProvider>
