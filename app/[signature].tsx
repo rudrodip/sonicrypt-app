@@ -10,7 +10,6 @@ import {
 
 export default function Page() {
   const { signature, network } = useLocalSearchParams();
-  console.log(signature, network);
   const [loading, setLoading] = useState(false);
   const [txDetails, setTxDetails] = useState<ParsedTransactionWithMeta | null>(null);
 
