@@ -1,12 +1,12 @@
 import { Label, Select, Adapt, Sheet, YStack } from "tamagui";
 import { Check, ChevronDown, ChevronUp } from "@tamagui/lucide-icons";
-import React from "react";
+import React, { useState } from "react";
 
 type SelectItemProps = {
   label: string | null;
   items: {
     label: string;
-    value: string;
+    value: any;
   }[];
   onValueChange: (val: string) => void;
 };
@@ -16,11 +16,18 @@ export default function SelectItems({
   items,
   onValueChange,
 }: SelectItemProps) {
+  const [val, setVal] = useState(items[0].value);
+
   return (
-    <Select value={items[0].value} onValueChange={onValueChange}>
+    <Select value={val} onValueChange={
+      (val) => {
+        setVal(val);
+        onValueChange(val);
+      }
+    }>
       <Label>{label}</Label>
-      <Select.Trigger width="unset" iconAfter={ChevronDown}>
-        <Select.Value placeholder="network" />
+      <Select.Trigger iconAfter={ChevronDown}>
+        <Select.Value placeholder={label} />
       </Select.Trigger>
 
       <Adapt when="sm" platform="touch">
@@ -41,7 +48,7 @@ export default function SelectItems({
             </Sheet.ScrollView>
           </Sheet.Frame>
           <Sheet.Overlay
-            animation="lazy"
+            animation="quick"
             enterStyle={{ opacity: 0 }}
             exitStyle={{ opacity: 0 }}
           />
