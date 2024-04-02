@@ -7,12 +7,11 @@ import {
   clusterApiUrl,
   ConfirmedSignatureInfo,
 } from "@solana/web3.js";
-import { useConfig } from "../../context/config-context";
 import { useEffect, useState } from "react";
 import SelectItems from "../../components/select-items";
+import { Link } from "expo-router";
 
 export default function Transactions() {
-  const { config } = useConfig();
   const [refreshing, setRefreshing] = useState(false);
   const [txs, setTxs] = useState<ConfirmedSignatureInfo[]>([]);
   const [error, setError] = useState<string | null>(null);
@@ -52,21 +51,7 @@ export default function Transactions() {
   const renderTxs = ({ item }: { item: ConfirmedSignatureInfo }) => {
     return (
       <>
-        <Button
-          key={item.signature}
-          display="flex"
-          flexDirection="row"
-          justifyContent="space-between"
-          alignItems="center"
-          padding="$3"
-          backgroundColor="$background0"
-          borderRadius={0}
-        >
-          <Text fontSize="$3" fontFamily="$mono">
-            {item.signature.split("").slice(0, 30).join("")}...
-          </Text>
-          <ExternalLink size={20} />
-        </Button>
+        <Transaction item={item} />
         <Separator />
       </>
     );
@@ -115,6 +100,28 @@ export default function Transactions() {
     </View>
   );
 }
+
+const Transaction = ({ item }: { item: ConfirmedSignatureInfo }) => {
+  return (
+    <Link href={{ pathname: "/[signature]", params: { signature: item.signature } }} asChild>
+      <Button
+        key={item.signature}
+        display="flex"
+        flexDirection="row"
+        justifyContent="space-between"
+        alignItems="center"
+        padding="$3"
+        backgroundColor="$background0"
+        borderRadius={0}
+      >
+        <Text fontSize="$3" fontFamily="$mono">
+          {item.signature.split("").slice(0, 30).join("")}...
+        </Text>
+        <ExternalLink size={20} />
+      </Button>
+    </Link>
+  );
+};
 
 const networkItems = [
   {
