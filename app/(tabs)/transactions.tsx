@@ -51,7 +51,7 @@ export default function Transactions() {
   const renderTxs = ({ item }: { item: ConfirmedSignatureInfo }) => {
     return (
       <>
-        <Transaction item={item} />
+        <Transaction item={item} network={network} />
         <Separator />
       </>
     );
@@ -101,9 +101,21 @@ export default function Transactions() {
   );
 }
 
-const Transaction = ({ item }: { item: ConfirmedSignatureInfo }) => {
+const Transaction = ({
+  item,
+  network,
+}: {
+  item: ConfirmedSignatureInfo;
+  network: "mainnet-beta" | "devnet" | "testnet";
+}) => {
   return (
-    <Link href={{ pathname: "/[signature]", params: { signature: item.signature } }} asChild>
+    <Link
+      href={{
+        pathname: "/[signature]",
+        params: { signature: item.signature, network: network },
+      }}
+      asChild
+    >
       <Button
         key={item.signature}
         display="flex"
