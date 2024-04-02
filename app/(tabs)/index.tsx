@@ -1,29 +1,41 @@
 import { Text, View, ScrollView, Image, Button } from "tamagui";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { StyleSheet, TouchableOpacity } from "react-native";
+import { StyleSheet } from "react-native";
 import {
   Bluetooth,
   BluetoothConnected,
   BluetoothOff,
   Wallet2,
+  QrCode,
+  RefreshCcw,
 } from "@tamagui/lucide-icons";
 import { Link } from "expo-router";
 import QRCode from "react-native-qrcode-svg";
-import { useContext } from "react";
+import { useState, useContext } from "react";
 import ConfigContext from "../../context/config-context";
 import ConfigForm from "../../components/config-form";
 
 export default function Home() {
+  const [tempWalletAddress, setTempWalletAddress] = useState("");
   const configObj = useContext(ConfigContext);
   const bluetoothStatus = configObj?.config.bleStatus;
   const walletAddress = configObj?.config.walletAddress;
 
+  const clearData = () => {
+    configObj?.setConfig({
+      ...configObj.config,
+      walletAddress: "",
+      wifiPassword: "",
+      wifiSSID: "",
+    })
+    setTempWalletAddress("");
+  }
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View style={styles.cardContainer}>
         <View style={styles.qrContainer}>
-          {walletAddress !== "" ? (
-            <QRCode value={walletAddress} size={200} />
+          {tempWalletAddress !== "" ? (
+            <QRCode value={tempWalletAddress} size={200} />
           ) : (
             <Image
               source={require("../../assets/images/logo.png")}
@@ -72,14 +84,20 @@ export default function Home() {
               <Wallet2 color={walletAddress ? "$background" : "$color"} />
             </Button>
           </View>
-          <Button style={styles.qrCodeGenerateButton}>
-            <Text>Refresh</Text>
+          <Button style={styles.qrCodeGenerateButton} onPress={clearData}>
+            <View display="flex" flexDirection="row" alignItems="center" gap={5}>
+              <Text>Refresh</Text>
+              <RefreshCcw size={20} />
+            </View>
           </Button>
           <Button
             style={styles.qrCodeGenerateButton}
-            disabled={!walletAddress}
+            onPress={() => setTempWalletAddress(walletAddress || "")}
           >
-            <Text>Generate QR code</Text>
+            <View display="flex" flexDirection="row" alignItems="center" gap={5}>
+            <Text>Update QR</Text>
+            <QrCode size={20} />
+            </View>
           </Button>
         </View>
       </View>
