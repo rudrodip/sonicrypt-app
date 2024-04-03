@@ -57,6 +57,7 @@
     "react-native-screens": "~3.29.0",
     "react-native-svg": "^15.1.0",
     "react-native-web": "^0.19.10",
+    "react-native-webview": "^13.8.4",
     "tamagui": "^1.92.1",
     "tweetnacl": "^1.0.3",
     "typescript": "^5.3.3",
