@@ -1,42 +1,33 @@
-
-import { useLocalSearchParams } from 'expo-router';
-import { Text, View, Spinner, ScrollView } from 'tamagui';
-import { useEffect, useState } from 'react';
-import {
-  Connection,
-  clusterApiUrl,
-  ParsedTransactionWithMeta
-} from "@solana/web3.js";
-import QRCode from 'react-native-qrcode-svg';
+import { useLocalSearchParams } from "expo-router";
+import { WebView } from "react-native-webview";
+import { Progress, View } from "tamagui";
+import { useState } from "react";
 
 export default function Page() {
   const { signature, network } = useLocalSearchParams();
-  const [loading, setLoading] = useState(false);
-  const [txDetails, setTxDetails] = useState<ParsedTransactionWithMeta | null>(null);
-
-  const connection = new Connection(clusterApiUrl(network as "mainnet-beta" | "testnet" | "devnet"), "confirmed");
-
-  const fetchTransactionDetails = async () => {
-    try {
-      setLoading(true);
-      const details = await connection.getParsedTransaction(signature as string, "confirmed");
-      setTxDetails(details);
-    } catch (error) {
-      console.log(error)
-    } finally {
-      setLoading(false);
-    }
-  }
-  useEffect(() => {
-    if (!signature) return;
-    fetchTransactionDetails();
-  }, [signature, network]);
+  const [progress, setProgress] = useState(0);
+  const [loaded, setLoaded] = useState(false);
 
   return (
     <View flex={1}>
-      <Text>Signature: {signature}</Text>
-      <Text>Network: {network}</Text>
-      {loading && <Spinner size="large" color="$color" />}
+      {!loaded && (
+        <Progress value={progress} borderRadius={0} height="$0.5">
+          <Progress.Indicator />
+        </Progress>
+      )}
+      <WebView
+        style={{
+          flex: 1,
+        }}
+        source={{
+          uri: `https://explorer.solana.com/tx/${signature}?cluster=${network}`,
+        }}
+        //@ts-ignore
+        onLoadProgress={(event) =>
+          setProgress(parseInt(event.nativeEvent.progress) * 100)
+        }
+        onLoadEnd={() => setLoaded(true)}
+      />
     </View>
   );
 }
