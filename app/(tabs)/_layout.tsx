@@ -1,6 +1,6 @@
 import { Tabs } from 'expo-router'
 import { useTheme } from 'tamagui'
-import { Home, Send, ClipboardPen, Settings2, Box } from '@tamagui/lucide-icons'
+import { Home, Send, Settings2, Box } from '@tamagui/lucide-icons'
 
 export default function TabLayout() {
   const theme = useTheme()
@@ -11,6 +11,7 @@ export default function TabLayout() {
         tabBarHideOnKeyboard: true,
         tabBarStyle: {
           paddingBottom: 10,
+          paddingTop: 10,
           height: 60,
         }
       }}
@@ -19,6 +20,7 @@ export default function TabLayout() {
         name="index"
         options={{
           headerShown: false,
+          title: "Home",
           tabBarIcon: ({ color }) => <Home color={color}>Home</Home>,
         }}
       />
@@ -27,13 +29,6 @@ export default function TabLayout() {
         options={{
           title: 'Transactions',
           tabBarIcon: ({ color }) => <Send color={color}>Transactions</Send>,
-        }}
-      />
-      <Tabs.Screen
-        name="report"
-        options={{
-          title: 'Report',
-          tabBarIcon: ({ color }) => <ClipboardPen color={color}>Report</ClipboardPen>,
         }}
       />
       <Tabs.Screen
@@ -46,7 +41,8 @@ export default function TabLayout() {
       <Tabs.Screen
         name="emulate"
         options={{
-          title: 'Emulate',
+          headerShown: false,
+          title: "Emulator",
           tabBarIcon: ({ color }) => <Box color={color}>Emulate</Box>,
         }}
       />
