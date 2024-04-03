@@ -1,12 +1,13 @@
 
 import { useLocalSearchParams } from 'expo-router';
-import { Text, View, Spinner } from 'tamagui';
+import { Text, View, Spinner, ScrollView } from 'tamagui';
 import { useEffect, useState } from 'react';
 import {
   Connection,
   clusterApiUrl,
   ParsedTransactionWithMeta
 } from "@solana/web3.js";
+import QRCode from 'react-native-qrcode-svg';
 
 export default function Page() {
   const { signature, network } = useLocalSearchParams();
@@ -32,7 +33,7 @@ export default function Page() {
   }, [signature, network]);
 
   return (
-    <View flex={1} alignItems='center'>
+    <View flex={1}>
       <Text>Signature: {signature}</Text>
       <Text>Network: {network}</Text>
       {loading && <Spinner size="large" color="$color" />}
