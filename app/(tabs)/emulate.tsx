@@ -147,19 +147,19 @@ export default function EmulateDevice() {
           justifyContent="center"
           alignItems="center"
           marginHorizontal="auto"
-        >
+          >
           {animationTrigger && (
             <LinearGradient
-              colors={["#9945FF", "#15F095"]}
-              start={{ x: 0.5, y: 0 }}
-              end={{ x: 0, y: 1 }}
-              style={{
-                position: "absolute",
-                width: "100%",
-                height: "100%",
-                borderRadius: 10,
-                zIndex: -1,
-              }}
+            colors={["#9945FF", "#15F095"]}
+            start={{ x: 0.5, y: 0 }}
+            end={{ x: 0, y: 1 }}
+            style={{
+              position: "absolute",
+              width: "100%",
+              height: "100%",
+              borderRadius: 10,
+              zIndex: -1,
+            }}
             ></LinearGradient>
           )}
           <QRCode value={`sol:${walletAddress}`} size={width * 0.8} />
@@ -172,7 +172,7 @@ export default function EmulateDevice() {
           alignItems="center"
           paddingTop="$3"
           paddingHorizontal="$1"
-        >
+          >
           <Text fontSize="$5">Wallet address: </Text>
           <View
             flex={1}
@@ -180,14 +180,14 @@ export default function EmulateDevice() {
             gap={5}
             alignItems="center"
             justifyContent="space-between"
-          >
+            >
             <Text color="$color075">
               {ellipsify(walletAddress, Math.floor(width / 40))}
             </Text>
             <ClipboardIcon
               size={15}
               onPress={() => copyToClipboard(walletAddress)}
-            />
+              />
           </View>
         </View>
         <View>
@@ -195,10 +195,10 @@ export default function EmulateDevice() {
             label={null}
             items={networkItems}
             onValueChange={(val) => setNetwork(val as Network)}
-          />
+            />
         </View>
       </View>
-      <Text fontSize="$6" marginVertical="$3" textAlign="center">
+      <Text fontSize="$6" marginVertical="$4" textAlign="center">
         {txs.length === 0 ? "No recent transactions" : "Recent transactions"}
       </Text>
       <ScrollView>
@@ -210,7 +210,7 @@ export default function EmulateDevice() {
           type="multiple"
           backgroundColor="$background"
           borderRadius="$5"
-        >
+          >
           {txs
             .filter((tx) => tx.receiver.toBase58() == walletAddress)
             .map((tx) => {
@@ -222,7 +222,7 @@ export default function EmulateDevice() {
                     borderWidth="$0"
                     borderRadius="$5"
                     backfaceVisibility="hidden"
-                  >
+                    >
                     {({ open }: { open: boolean }) => (
                       <>
                         <View width="80%" display="flex" flexDirection="row" alignItems="center" justifyContent="space-between">
@@ -232,7 +232,7 @@ export default function EmulateDevice() {
                         <Square
                           animation="quick"
                           rotate={open ? "180deg" : "0deg"}
-                        >
+                          >
                           <ChevronDown size="$1" />
                         </Square>
                       </>
@@ -246,7 +246,7 @@ export default function EmulateDevice() {
                       alignItems="center"
                       paddingHorizontal="$1"
                       justifyContent="space-between"
-                    >
+                      >
                       <Text fontSize="$3">Sender address: </Text>
                       <View
                         width="100%"
@@ -254,7 +254,7 @@ export default function EmulateDevice() {
                         flexDirection="row"
                         alignItems="center"
                         justifyContent="space-between"
-                      >
+                        >
                         <Text color="$color075">
                           {ellipsify(
                             tx.sender.toBase58(),
@@ -264,7 +264,7 @@ export default function EmulateDevice() {
                         <ClipboardIcon
                           size={15}
                           onPress={() => copyToClipboard(tx.sender.toBase58())}
-                        />
+                          />
                       </View>
                     </View>
                     <View
@@ -273,7 +273,7 @@ export default function EmulateDevice() {
                       flexDirection="row"
                       alignItems="center"
                       paddingHorizontal="$1"
-                    >
+                      >
                       <Text fontSize="$3">Signature: </Text>
                       <View
                         flex={1}
@@ -281,14 +281,14 @@ export default function EmulateDevice() {
                         gap={5}
                         alignItems="center"
                         justifyContent="space-between"
-                      >
+                        >
                         <Text color="$color075">
                           {ellipsify(tx.signature, Math.floor(width / 40))}
                         </Text>
                         <ClipboardIcon
                           size={15}
                           onPress={() => copyToClipboard(tx.signature)}
-                        />
+                          />
                       </View>
                     </View>
                     <Text paddingVertical="$2" paddingHorizontal="$1" fontSize="$3">Date: {tx.date.toDateString()}</Text>
