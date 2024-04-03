@@ -147,6 +147,7 @@ export default function EmulateDevice() {
           justifyContent="center"
           alignItems="center"
           marginHorizontal="auto"
+          backgroundColor="white"
           >
           {animationTrigger && (
             <LinearGradient
