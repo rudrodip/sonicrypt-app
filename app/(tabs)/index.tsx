@@ -27,6 +27,7 @@ export default function Home() {
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
+      <ScrollView>
       <View style={styles.cardContainer}>
         <View style={styles.qrContainer} backgroundColor="white" borderRadius="$5">
           {tempWalletAddress !== "" ? (
@@ -112,6 +113,7 @@ export default function Home() {
       <View flex={1} display="flex" justifyContent="center" alignItems="center">
         <ConfigForm />
       </View>
+      </ScrollView>
     </SafeAreaView>
   );
 }
