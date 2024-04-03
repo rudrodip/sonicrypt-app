@@ -78,8 +78,8 @@ export default function Home() {
               alignItems="flex-end"
               gap={5}
             >
-              <Text fontFamily="$mono" fontSize="$3">Bluetooth {bluetoothStatus}</Text>
-              <Text fontFamily="$mono" fontSize="$3">{selectedAccount ? "Wallet connected" : "Connect wallet"}</Text>
+              <Text fontSize="$2">BLE {bluetoothStatus != "connected" ? "disconnected" : "connected"}</Text>
+              <Text fontSize="$2">{selectedAccount ? "Wallet connected" : "Connect wallet"}</Text>
             </View>
           </Button>
           <Button
