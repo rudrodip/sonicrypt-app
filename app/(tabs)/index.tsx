@@ -28,7 +28,7 @@ export default function Home() {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View style={styles.cardContainer}>
-        <View style={styles.qrContainer}>
+        <View style={styles.qrContainer} backgroundColor="white" borderRadius="$5">
           {tempWalletAddress !== "" ? (
             <QRCode
               value={
