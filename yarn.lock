@@ -12090,13 +12090,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-confetti-cannon@npm:^1.5.2":
-  version: 1.5.2
-  resolution: "react-native-confetti-cannon@npm:1.5.2"
-  checksum: 0ca5d56eef9763e891d228017708c340b54cc87d46d1c38d7aff5b46d511d78b52d884b9492aa1022cdd4772ef974c0e2175831516b1aafda93208e97e5098a1
-  languageName: node
-  linkType: hard
-
 "react-native-css-interop@npm:~0.0.21":
   version: 0.0.21
   resolution: "react-native-css-interop@npm:0.0.21"
@@ -13173,7 +13166,6 @@ __metadata:
     react-native: "npm:0.73.4"
     react-native-base64: "npm:^0.2.1"
     react-native-ble-plx: "npm:^3.1.2"
-    react-native-confetti-cannon: "npm:^1.5.2"
     react-native-get-random-values: "npm:^1.11.0"
     react-native-qrcode-svg: "npm:^6.3.0"
     react-native-reanimated: "npm:~3.6.2"
