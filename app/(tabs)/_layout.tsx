@@ -31,13 +31,13 @@ export default function TabLayout() {
           tabBarIcon: ({ color }) => <Send color={color}>Transactions</Send>,
         }}
       />
-      <Tabs.Screen
+      {/* <Tabs.Screen
         name="settings"
         options={{
           title: 'Settings',
           tabBarIcon: ({ color }) => <Settings2 color={color}>Settings</Settings2>,
         }}
-      />
+      /> */}
       <Tabs.Screen
         name="emulate"
         options={{
