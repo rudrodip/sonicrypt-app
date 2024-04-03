@@ -19,16 +19,24 @@ import WalletConnectButton from "../../components/wallet-connect-button";
 
 export default function Home() {
   const { selectedAccount } = useAuthorization();
-  const [tempWalletAddress, setTempWalletAddress] = useState(selectedAccount?.address || "");
+  const [tempWalletAddress, setTempWalletAddress] = useState(
+    selectedAccount?.address || ""
+  );
   const { config, setConfig } = useConfig();
   const bluetoothStatus = config.bleStatus;
-  
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View style={styles.cardContainer}>
         <View style={styles.qrContainer}>
           {tempWalletAddress !== "" ? (
-            <QRCode value={`sol:${selectedAccount?.publicKey.toBase58()}` || `sol:${tempWalletAddress}`} size={200} />
+            <QRCode
+              value={
+                `sol:${selectedAccount?.publicKey.toBase58()}` ||
+                `sol:${tempWalletAddress}`
+              }
+              size={200}
+            />
           ) : (
             <Image
               source={require("../../assets/images/logo.png")}
@@ -70,21 +78,24 @@ export default function Home() {
                 )}
               </Button>
             </Link>
-           <WalletConnectButton />
+            <WalletConnectButton />
           </View>
           <Button style={styles.qrCodeGenerateButton} disabled>
-            <View
-              display="flex"
-              alignItems="flex-end"
-              gap={5}
-            >
-              <Text fontSize="$2">BLE {bluetoothStatus != "connected" ? "disconnected" : "connected"}</Text>
-              <Text fontSize="$2">{selectedAccount ? "Wallet connected" : "Connect wallet"}</Text>
+            <View display="flex" alignItems="flex-end" gap={5}>
+              <Text fontSize="$2">
+                BLE{" "}
+                {bluetoothStatus != "connected" ? "disconnected" : "connected"}
+              </Text>
+              <Text fontSize="$2">
+                {selectedAccount ? "Wallet connected" : "Connect wallet"}
+              </Text>
             </View>
           </Button>
           <Button
             style={styles.qrCodeGenerateButton}
-            onPress={() => setTempWalletAddress(selectedAccount?.publicKey.toBase58() || "")}
+            onPress={() =>
+              setTempWalletAddress(selectedAccount?.publicKey.toBase58() || "")
+            }
           >
             <View
               display="flex"
@@ -98,9 +109,9 @@ export default function Home() {
           </Button>
         </View>
       </View>
-      <ScrollView>
+      <View flex={1} display="flex" justifyContent="center" alignItems="center">
         <ConfigForm />
-      </ScrollView>
+      </View>
     </SafeAreaView>
   );
 }
