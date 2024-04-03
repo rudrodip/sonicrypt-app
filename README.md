@@ -2,6 +2,8 @@
 
 Sonicrypt is a compact and intuitive tool designed to enhance the user experience for both buyers and sellers engaging in crypto transactions. You can find more details [here](https://github.com/rudrodip/sonicrypt)
 
+[Beta release demo video](https://www.youtube.com/watch?v=OEf5nahFNH4)
+
 ## Description
 
 Sonicrypt app is a mobile app for [Sonicrypt](https://github.com/rudrodip/sonicrypt) device that let's you connect to the device and configure it. It makes it easy to interact with the device.
