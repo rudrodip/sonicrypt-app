@@ -85,9 +85,14 @@ export default function Transactions() {
         </View>
       </View>
       {txs.length === 0 && !refreshing && !error && (
+        <>
         <Text margin="$5" fontSize="$6" textAlign="center">
-          No transaction on {network} found ꃋᴖꃋ
+          No transaction on {network} found
         </Text>
+        <Text margin="$5" fontSize="$6" textAlign="center">
+          ꃋᴖꃋ
+        </Text>
+        </>
       )}
       <FlatList
         data={txs}
