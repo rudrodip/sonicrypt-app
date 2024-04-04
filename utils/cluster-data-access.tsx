@@ -1,6 +1,6 @@
-import { WalletAdapterNetwork } from "@solana/wallet-adapter-base";
-import { clusterApiUrl } from "@solana/web3.js";
-import { createContext, ReactNode, useContext, useMemo, useState } from "react";
+import { WalletAdapterNetwork } from '@solana/wallet-adapter-base';
+import { clusterApiUrl } from '@solana/web3.js';
+import { ReactNode, createContext, useContext, useMemo, useState } from 'react';
 
 export interface Cluster {
   name: string;
@@ -10,10 +10,10 @@ export interface Cluster {
 }
 
 export enum ClusterNetwork {
-  Mainnet = "mainnet-beta",
-  Testnet = "testnet",
-  Devnet = "devnet",
-  Custom = "custom",
+  Mainnet = 'mainnet-beta',
+  Testnet = 'testnet',
+  Devnet = 'devnet',
+  Custom = 'custom',
 }
 export function toWalletAdapterNetwork(
   cluster?: ClusterNetwork
@@ -32,13 +32,13 @@ export function toWalletAdapterNetwork(
 
 export const defaultClusters: Readonly<Cluster[]> = [
   {
-    name: "devnet",
-    endpoint: clusterApiUrl("devnet"),
+    name: 'devnet',
+    endpoint: clusterApiUrl('devnet'),
     network: ClusterNetwork.Devnet,
   },
   {
-    name: "testnet",
-    endpoint: clusterApiUrl("testnet"),
+    name: 'testnet',
+    endpoint: clusterApiUrl('testnet'),
     network: ClusterNetwork.Testnet,
   },
 ];
@@ -80,21 +80,21 @@ export function useCluster() {
 }
 
 function getClusterUrlParam(cluster: Cluster): string {
-  let suffix = "";
+  let suffix = '';
   switch (cluster.network) {
     case ClusterNetwork.Devnet:
-      suffix = "devnet";
+      suffix = 'devnet';
       break;
     case ClusterNetwork.Mainnet:
-      suffix = "";
+      suffix = '';
       break;
     case ClusterNetwork.Testnet:
-      suffix = "testnet";
+      suffix = 'testnet';
       break;
     default:
       suffix = `custom&customUrl=${encodeURIComponent(cluster.endpoint)}`;
       break;
   }
 
-  return suffix.length ? `?cluster=${suffix}` : "";
+  return suffix.length ? `?cluster=${suffix}` : '';
 }

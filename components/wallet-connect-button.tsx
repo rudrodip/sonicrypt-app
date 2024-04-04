@@ -1,9 +1,10 @@
-import { Button } from "tamagui";
-import { Wallet2 } from "@tamagui/lucide-icons";
-import { StyleSheet } from "react-native";
-import { useAuthorization } from "../utils/useAuthorization";
-import { useMobileWallet } from "../utils/useMobileWallet";
-import { useState, useCallback } from "react";
+import { Wallet2 } from '@tamagui/lucide-icons';
+import { useCallback, useState } from 'react';
+import { StyleSheet } from 'react-native';
+import { Button } from 'tamagui';
+
+import { useAuthorization } from '../utils/useAuthorization';
+import { useMobileWallet } from '../utils/useMobileWallet';
 
 export default function WalletConnectButton() {
   const { authorizeSession, selectedAccount } = useAuthorization();
@@ -32,22 +33,22 @@ export default function WalletConnectButton() {
   return (
     <Button
       style={styles.button}
-      backgroundColor={selectedAccount ? "$color" : "$background"}
+      backgroundColor={selectedAccount ? '$color' : '$background'}
       disabled={authorizationInProgress}
       onPress={handleConnectPress}
     >
-      <Wallet2 color={selectedAccount ? "$background" : "$color"} />
+      <Wallet2 color={selectedAccount ? '$background' : '$color'} />
     </Button>
   );
 }
 
 const styles = StyleSheet.create({
   button: {
-    width: "48%",
+    width: '48%',
     aspectRatio: 1,
     borderRadius: 10,
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });

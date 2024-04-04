@@ -1,6 +1,6 @@
-import { Label, Select, Adapt, Sheet, YStack } from "tamagui";
-import { Check, ChevronDown, ChevronUp } from "@tamagui/lucide-icons";
-import React, { useState } from "react";
+import { Check, ChevronDown, ChevronUp } from '@tamagui/lucide-icons';
+import React, { useState } from 'react';
+import { Adapt, Label, Select, Sheet, YStack } from 'tamagui';
 
 type SelectItemProps = {
   label: string | null;
@@ -19,12 +19,13 @@ export default function SelectItems({
   const [val, setVal] = useState(items[0].value);
 
   return (
-    <Select value={val} onValueChange={
-      (val) => {
+    <Select
+      value={val}
+      onValueChange={(val) => {
         setVal(val);
         onValueChange(val);
-      }
-    }>
+      }}
+    >
       <Label>{label}</Label>
       <Select.Trigger iconAfter={ChevronDown}>
         <Select.Value placeholder={label} />
@@ -36,7 +37,7 @@ export default function SelectItems({
           modal
           dismissOnSnapToBottom
           animationConfig={{
-            type: "spring",
+            type: 'spring',
             damping: 20,
             mass: 1.2,
             stiffness: 250,
@@ -69,7 +70,7 @@ export default function SelectItems({
 
         <Select.Viewport
           animation="quick"
-          animateOnly={["transform", "opacity"]}
+          animateOnly={['transform', 'opacity']}
           enterStyle={{ o: 0, y: -10 }}
           exitStyle={{ o: 0, y: 10 }}
           minWidth={200}

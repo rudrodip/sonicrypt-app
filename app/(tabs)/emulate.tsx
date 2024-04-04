@@ -1,28 +1,29 @@
+import Clipboard from '@react-native-clipboard/clipboard';
+import { Connection, PublicKey, clusterApiUrl } from '@solana/web3.js';
+import { ChevronDown, Clipboard as ClipboardIcon } from '@tamagui/lucide-icons';
+import { Audio } from 'expo-av';
+import { LinearGradient } from 'expo-linear-gradient';
+import { Link } from 'expo-router';
+import { useEffect, useState } from 'react';
+import { Dimensions, ToastAndroid } from 'react-native';
+import QRCode from 'react-native-qrcode-svg';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import {
+  Accordion,
   Button,
   ScrollView,
+  Separator,
+  Square,
   Text,
   View,
-  Accordion,
-  Square,
-  Separator,
-} from "tamagui";
-import { SafeAreaView } from "react-native-safe-area-context";
-import QRCode from "react-native-qrcode-svg";
-import { Dimensions, ToastAndroid } from "react-native";
-import { useAuthorization } from "../../utils/useAuthorization";
-import { useConfig } from "../../context/config-context";
-import { Link } from "expo-router";
-import Clipboard from "@react-native-clipboard/clipboard";
-import { useEffect, useState } from "react";
-import { ellipsify } from "../../utils/ellipsify";
-import { Clipboard as ClipboardIcon, ChevronDown } from "@tamagui/lucide-icons";
-import { Connection, clusterApiUrl, PublicKey } from "@solana/web3.js";
-import SelectItems from "../../components/select-items";
-import { Audio } from "expo-av";
-import { LinearGradient } from "expo-linear-gradient";
+} from 'tamagui';
 
-type Network = "mainnet-beta" | "devnet" | "testnet";
+import SelectItems from '../../components/select-items';
+import { useConfig } from '../../context/config-context';
+import { ellipsify } from '../../utils/ellipsify';
+import { useAuthorization } from '../../utils/useAuthorization';
+
+type Network = 'mainnet-beta' | 'devnet' | 'testnet';
 
 type TxDetails = {
   sender: PublicKey;
@@ -34,7 +35,7 @@ type TxDetails = {
 };
 
 export default function EmulateDevice() {
-  const width = Dimensions.get("window").width;
+  const width = Dimensions.get('window').width;
   const [sound, setSound] = useState<Audio.Sound>();
   const { selectedAccount } = useAuthorization();
   const { config } = useConfig();
@@ -51,14 +52,14 @@ export default function EmulateDevice() {
 
   async function playSound() {
     const { sound } = await Audio.Sound.createAsync(
-      require("../../assets/sound/notify.mp3")
+      require('../../assets/sound/notify.mp3')
     );
     setSound(sound);
     setAnimationTrigger(true);
     await sound.playAsync();
     // sleep for a while
     await new Promise((resolve) => setTimeout(resolve, 3000));
-    setAnimationTrigger(false)
+    setAnimationTrigger(false);
   }
 
   useEffect(() => {
@@ -70,9 +71,9 @@ export default function EmulateDevice() {
   }, [sound]);
 
   useEffect(() => {
-    if (!selectedAccount && config.walletAddress === "") return;
+    if (!selectedAccount && config.walletAddress === '') return;
 
-    const connection = new Connection(clusterApiUrl(network), "confirmed");
+    const connection = new Connection(clusterApiUrl(network), 'confirmed');
     const publicKey = new PublicKey(walletAddress);
 
     connection.onAccountChange(publicKey, (account) => {
@@ -84,7 +85,7 @@ export default function EmulateDevice() {
         .then((result) => {
           connection
             .getParsedTransaction(result[0].signature, {
-              commitment: "confirmed",
+              commitment: 'confirmed',
             })
             .then((result) => {
               const signature = result?.transaction.signatures[0];
@@ -130,7 +131,7 @@ export default function EmulateDevice() {
     });
   }, [network, selectedAccount]);
 
-  if (!selectedAccount && config.walletAddress == "") {
+  if (!selectedAccount && config.walletAddress == '') {
     return <NotFound />;
   }
 
@@ -148,19 +149,19 @@ export default function EmulateDevice() {
           alignItems="center"
           marginHorizontal="auto"
           backgroundColor="white"
-          >
+        >
           {animationTrigger && (
             <LinearGradient
-            colors={["#9945FF", "#15F095"]}
-            start={{ x: 0.5, y: 0 }}
-            end={{ x: 0, y: 1 }}
-            style={{
-              position: "absolute",
-              width: "100%",
-              height: "100%",
-              borderRadius: 10,
-              zIndex: -1,
-            }}
+              colors={['#9945FF', '#15F095']}
+              start={{ x: 0.5, y: 0 }}
+              end={{ x: 0, y: 1 }}
+              style={{
+                position: 'absolute',
+                width: '100%',
+                height: '100%',
+                borderRadius: 10,
+                zIndex: -1,
+              }}
             ></LinearGradient>
           )}
           <QRCode value={`sol:${walletAddress}`} size={width * 0.8} />
@@ -173,7 +174,7 @@ export default function EmulateDevice() {
           alignItems="center"
           paddingTop="$3"
           paddingHorizontal="$1"
-          >
+        >
           <Text fontSize="$5">Wallet address: </Text>
           <View
             flex={1}
@@ -181,14 +182,14 @@ export default function EmulateDevice() {
             gap={5}
             alignItems="center"
             justifyContent="space-between"
-            >
+          >
             <Text color="$color075">
               {ellipsify(walletAddress, Math.floor(width / 40))}
             </Text>
             <ClipboardIcon
               size={15}
               onPress={() => copyToClipboard(walletAddress)}
-              />
+            />
           </View>
         </View>
         <View>
@@ -196,11 +197,11 @@ export default function EmulateDevice() {
             label={null}
             items={networkItems}
             onValueChange={(val) => setNetwork(val as Network)}
-            />
+          />
         </View>
       </View>
       <Text fontSize="$6" marginVertical="$4" textAlign="center">
-        {txs.length === 0 ? "No recent transactions" : "Recent transactions"}
+        {txs.length === 0 ? 'No recent transactions' : 'Recent transactions'}
       </Text>
       <ScrollView>
         <Accordion
@@ -211,7 +212,7 @@ export default function EmulateDevice() {
           type="multiple"
           backgroundColor="$background"
           borderRadius="$5"
-          >
+        >
           {txs
             .filter((tx) => tx.receiver.toBase58() == walletAddress)
             .map((tx) => {
@@ -223,17 +224,23 @@ export default function EmulateDevice() {
                     borderWidth="$0"
                     borderRadius="$5"
                     backfaceVisibility="hidden"
-                    >
+                  >
                     {({ open }: { open: boolean }) => (
                       <>
-                        <View width="80%" display="flex" flexDirection="row" alignItems="center" justifyContent="space-between">
+                        <View
+                          width="80%"
+                          display="flex"
+                          flexDirection="row"
+                          alignItems="center"
+                          justifyContent="space-between"
+                        >
                           <Text>{tx.date.toLocaleTimeString()}</Text>
                           <Text>Received: {tx.recv} sol</Text>
                         </View>
                         <Square
                           animation="quick"
-                          rotate={open ? "180deg" : "0deg"}
-                          >
+                          rotate={open ? '180deg' : '0deg'}
+                        >
                           <ChevronDown size="$1" />
                         </Square>
                       </>
@@ -247,7 +254,7 @@ export default function EmulateDevice() {
                       alignItems="center"
                       paddingHorizontal="$1"
                       justifyContent="space-between"
-                      >
+                    >
                       <Text fontSize="$3">Sender address: </Text>
                       <View
                         width="100%"
@@ -255,7 +262,7 @@ export default function EmulateDevice() {
                         flexDirection="row"
                         alignItems="center"
                         justifyContent="space-between"
-                        >
+                      >
                         <Text color="$color075">
                           {ellipsify(
                             tx.sender.toBase58(),
@@ -265,7 +272,7 @@ export default function EmulateDevice() {
                         <ClipboardIcon
                           size={15}
                           onPress={() => copyToClipboard(tx.sender.toBase58())}
-                          />
+                        />
                       </View>
                     </View>
                     <View
@@ -274,7 +281,7 @@ export default function EmulateDevice() {
                       flexDirection="row"
                       alignItems="center"
                       paddingHorizontal="$1"
-                      >
+                    >
                       <Text fontSize="$3">Signature: </Text>
                       <View
                         flex={1}
@@ -282,18 +289,26 @@ export default function EmulateDevice() {
                         gap={5}
                         alignItems="center"
                         justifyContent="space-between"
-                        >
+                      >
                         <Text color="$color075">
                           {ellipsify(tx.signature, Math.floor(width / 40))}
                         </Text>
                         <ClipboardIcon
                           size={15}
                           onPress={() => copyToClipboard(tx.signature)}
-                          />
+                        />
                       </View>
                     </View>
-                    <Text paddingVertical="$2" paddingHorizontal="$1" fontSize="$3">Date: {tx.date.toDateString()}</Text>
-                    <Text paddingHorizontal="$1" fontSize="$3">Time: {tx.date.toTimeString()}</Text>
+                    <Text
+                      paddingVertical="$2"
+                      paddingHorizontal="$1"
+                      fontSize="$3"
+                    >
+                      Date: {tx.date.toDateString()}
+                    </Text>
+                    <Text paddingHorizontal="$1" fontSize="$3">
+                      Time: {tx.date.toTimeString()}
+                    </Text>
                   </Accordion.Content>
                   <Separator />
                 </Accordion.Item>
@@ -307,16 +322,16 @@ export default function EmulateDevice() {
 
 const networkItems = [
   {
-    label: "Main Network",
-    value: "mainnet-beta",
+    label: 'Main Network',
+    value: 'mainnet-beta',
   },
   {
-    label: "Dev Network",
-    value: "devnet",
+    label: 'Dev Network',
+    value: 'devnet',
   },
   {
-    label: "Test Network",
-    value: "testnet",
+    label: 'Test Network',
+    value: 'testnet',
   },
 ];
 

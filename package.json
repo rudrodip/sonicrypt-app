@@ -67,12 +67,14 @@
   "devDependencies": {
     "@babel/core": "^7.23.3",
     "@solana/web3.js": "^1.91.1",
+    "@trivago/prettier-plugin-sort-imports": "^4.3.0",
     "@types/react": "~18.2.14",
     "@types/react-native-base64": "^0",
     "@types/react-native-get-random-values": "^1",
     "@types/uuid": "^9",
-    "burnt": "^0.12.2"
+    "burnt": "^0.12.2",
+    "prettier": "^3.2.5"
   },
   "private": true,
-  "packageManager": "yarn@4.0.2"
+  "packageManager": "yarn@4.1.1"
 }

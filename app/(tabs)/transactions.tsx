@@ -1,16 +1,17 @@
-import { Button, Separator, Text, View } from "tamagui";
-import { ExternalLink } from "@tamagui/lucide-icons";
-import { FlatList, Alert } from "react-native";
 import {
+  ConfirmedSignatureInfo,
   Connection,
   PublicKey,
   clusterApiUrl,
-  ConfirmedSignatureInfo,
-} from "@solana/web3.js";
-import { useEffect, useState } from "react";
-import SelectItems from "../../components/select-items";
-import { Link, Redirect } from "expo-router";
-import { useAuthorization } from "../../utils/useAuthorization";
+} from '@solana/web3.js';
+import { ExternalLink } from '@tamagui/lucide-icons';
+import { Link, Redirect } from 'expo-router';
+import { useEffect, useState } from 'react';
+import { Alert, FlatList } from 'react-native';
+import { Button, Separator, Text, View } from 'tamagui';
+
+import SelectItems from '../../components/select-items';
+import { useAuthorization } from '../../utils/useAuthorization';
 
 export default function Transactions() {
   const { selectedAccount } = useAuthorization();
@@ -18,24 +19,22 @@ export default function Transactions() {
   const [txs, setTxs] = useState<ConfirmedSignatureInfo[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [limit, setLimit] = useState(20);
-  const [network, setNetwork] = useState<"mainnet-beta" | "devnet" | "testnet">(
-    "mainnet-beta"
+  const [network, setNetwork] = useState<'mainnet-beta' | 'devnet' | 'testnet'>(
+    'mainnet-beta'
   );
 
   useEffect(() => {
     if (selectedAccount) {
-      const connection = new Connection(clusterApiUrl(network), "confirmed");
+      const connection = new Connection(clusterApiUrl(network), 'confirmed');
       const publicKey = new PublicKey(selectedAccount?.publicKey.toBase58());
 
       const fetchTransactions = async () => {
         try {
           setRefreshing(true);
-          const transactions = await connection.getConfirmedSignaturesForAddress2(
-            publicKey,
-            {
+          const transactions =
+            await connection.getConfirmedSignaturesForAddress2(publicKey, {
               limit,
-            }
-          );
+            });
           setTxs(transactions);
         } catch (error) {
           setError(error as string);
@@ -44,7 +43,6 @@ export default function Transactions() {
           setRefreshing(false);
         }
       };
-    
 
       fetchTransactions();
     }
@@ -72,7 +70,7 @@ export default function Transactions() {
             label="Network"
             items={networkItems}
             onValueChange={(value) =>
-              setNetwork(value as "mainnet-beta" | "devnet" | "testnet")
+              setNetwork(value as 'mainnet-beta' | 'devnet' | 'testnet')
             }
           />
         </View>
@@ -86,12 +84,12 @@ export default function Transactions() {
       </View>
       {txs.length === 0 && !refreshing && !error && (
         <>
-        <Text margin="$5" fontSize="$6" textAlign="center">
-          No transaction on {network} found
-        </Text>
-        <Text margin="$5" fontSize="$6" textAlign="center">
-          ꃋᴖꃋ
-        </Text>
+          <Text margin="$5" fontSize="$6" textAlign="center">
+            No transaction on {network} found
+          </Text>
+          <Text margin="$5" fontSize="$6" textAlign="center">
+            ꃋᴖꃋ
+          </Text>
         </>
       )}
       <FlatList
@@ -113,12 +111,12 @@ const Transaction = ({
   network,
 }: {
   item: ConfirmedSignatureInfo;
-  network: "mainnet-beta" | "devnet" | "testnet";
+  network: 'mainnet-beta' | 'devnet' | 'testnet';
 }) => {
   return (
     <Link
       href={{
-        pathname: "/[signature]",
+        pathname: '/[signature]',
         params: { signature: item.signature, network: network },
       }}
       asChild
@@ -134,7 +132,7 @@ const Transaction = ({
         borderRadius={0}
       >
         <Text fontSize="$3" fontFamily="$mono">
-          {item.signature.split("").slice(0, 30).join("")}...
+          {item.signature.split('').slice(0, 30).join('')}...
         </Text>
         <ExternalLink size={20} />
       </Button>
@@ -144,30 +142,30 @@ const Transaction = ({
 
 const networkItems = [
   {
-    label: "Main Network",
-    value: "mainnet-beta",
+    label: 'Main Network',
+    value: 'mainnet-beta',
   },
   {
-    label: "Dev Network",
-    value: "devnet",
+    label: 'Dev Network',
+    value: 'devnet',
   },
   {
-    label: "Test Network",
-    value: "testnet",
+    label: 'Test Network',
+    value: 'testnet',
   },
 ];
 
 const limitItems = [
   {
-    label: "20",
+    label: '20',
     value: 20,
   },
   {
-    label: "50",
+    label: '50',
     value: 50,
   },
   {
-    label: "100",
+    label: '100',
     value: 100,
   },
 ];

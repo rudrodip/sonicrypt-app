@@ -1,19 +1,19 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { PublicKey, PublicKeyInitData } from "@solana/web3.js";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
-  Account as AuthorizedAccount,
+  AuthToken,
   AuthorizationResult,
   AuthorizeAPI,
-  AuthToken,
+  Account as AuthorizedAccount,
   Base64EncodedAddress,
   DeauthorizeAPI,
-} from "@solana-mobile/mobile-wallet-adapter-protocol";
-import { toUint8Array } from "js-base64";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useCallback, useMemo } from "react";
+} from '@solana-mobile/mobile-wallet-adapter-protocol';
+import { PublicKey, PublicKeyInitData } from '@solana/web3.js';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { toUint8Array } from 'js-base64';
+import { useCallback, useMemo } from 'react';
 
-const CHAIN = "solana";
-const CLUSTER = "devnet";
+const CHAIN = 'solana';
+const CLUSTER = 'devnet';
 const CHAIN_IDENTIFIER = `${CHAIN}:${CLUSTER}`;
 
 export type Account = Readonly<{
@@ -64,14 +64,14 @@ function getPublicKeyFromAddress(address: Base64EncodedAddress): PublicKey {
 }
 
 function cacheReviver(key: string, value: any) {
-  if (key === "publicKey") {
+  if (key === 'publicKey') {
     return new PublicKey(value as PublicKeyInitData);
   } else {
     return value;
   }
 }
 
-const AUTHORIZATION_STORAGE_KEY = "authorization-cache";
+const AUTHORIZATION_STORAGE_KEY = 'authorization-cache';
 
 async function fetchAuthorization(): Promise<WalletAuthorization | null> {
   const cacheFetchResult = await AsyncStorage.getItem(
@@ -93,20 +93,20 @@ async function persistAuthorization(
 }
 
 export const APP_IDENTITY = {
-  name: "Sonicrypt",
-  uri: "https://sonicrypt.vercel.app",
+  name: 'Sonicrypt',
+  uri: 'https://sonicrypt.vercel.app',
 };
 
 export function useAuthorization() {
   const queryClient = useQueryClient();
   const { data: authorization, isLoading } = useQuery({
-    queryKey: ["wallet-authorization"],
+    queryKey: ['wallet-authorization'],
     queryFn: () => fetchAuthorization(),
   });
   const { mutate: setAuthorization } = useMutation({
     mutationFn: persistAuthorization,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["wallet-authorization"] });
+      queryClient.invalidateQueries({ queryKey: ['wallet-authorization'] });
     },
   });
 
@@ -142,9 +142,9 @@ export function useAuthorization() {
         chain: CHAIN_IDENTIFIER,
         auth_token: authorization?.authToken,
         sign_in_payload: {
-          domain: "sonicrypt.vercel.app",
-          statement: "Sign into Sonicrypt",
-          uri: "https://sonicrypt.vercel.app",
+          domain: 'sonicrypt.vercel.app',
+          statement: 'Sign into Sonicrypt',
+          uri: 'https://sonicrypt.vercel.app',
         },
       });
       return (await handleAuthorizationResult(authorizationResult))

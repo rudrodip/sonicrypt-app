@@ -1,19 +1,12 @@
-import {
-  View,
-  Input,
-  Form,
-  FormTrigger,
-  Button,
-  Label,
-  Text,
-} from "tamagui";
-import React from "react";
-import { StyleSheet } from "react-native";
-import { useConfig } from "../context/config-context";
-import type { Config } from "../context/config-context";
-import { writeToDevice } from "../app/bluetooth-modal";
-import SelectItems from "./select-items";
-import { useAuthorization } from "../utils/useAuthorization";
+import React from 'react';
+import { StyleSheet } from 'react-native';
+import { Button, Form, FormTrigger, Input, Label, Text, View } from 'tamagui';
+
+import { writeToDevice } from '../app/bluetooth-modal';
+import { useConfig } from '../context/config-context';
+import type { Config } from '../context/config-context';
+import { useAuthorization } from '../utils/useAuthorization';
+import SelectItems from './select-items';
 
 export default function ConfigForm() {
   const { config, setConfig } = useConfig();
@@ -37,32 +30,35 @@ export default function ConfigForm() {
 
     if (device && serviceUUID && characteristicUUID) {
       await writeToDevice(device, serviceUUID, characteristicUUID, message);
-      await writeToDevice(device, serviceUUID, characteristicUUID, "end");
+      await writeToDevice(device, serviceUUID, characteristicUUID, 'end');
     }
   };
 
   const handleSelectionChange = (val: string) => {
-    setConfig({...config, network: val as "mainnet-beta" | "devnet" | "testnet" })
-  }
+    setConfig({
+      ...config,
+      network: val as 'mainnet-beta' | 'devnet' | 'testnet',
+    });
+  };
 
   const networks = [
     {
-      label: "Main Network",
-      value: "mainnet-beta",
+      label: 'Main Network',
+      value: 'mainnet-beta',
     },
     {
-      label: "Dev Network",
-      value: "devnet",
+      label: 'Dev Network',
+      value: 'devnet',
     },
     {
-      label: "Test Network",
-      value: "testnet"
-    }
-  ]
+      label: 'Test Network',
+      value: 'testnet',
+    },
+  ];
 
   return (
     <View style={styles.formContainer}>
-      <Text style={{ fontSize: 25, fontWeight: "bold" }}>Configuration</Text>
+      <Text style={{ fontSize: 25, fontWeight: 'bold' }}>Configuration</Text>
       <Form onSubmit={sendMessageToDevice}>
         <InputWithLabel
           configKey="wifiSSID"
@@ -80,7 +76,7 @@ export default function ConfigForm() {
           placeholder="your wallet address"
           value={selectedAccount?.publicKey.toBase58()}
         />
-        <SelectItems 
+        <SelectItems
           label="Network"
           items={networks}
           onValueChange={handleSelectionChange}
@@ -106,7 +102,12 @@ type InputProps = {
   placeholder: string;
 };
 
-const InputWithLabel = ({ configKey, value, label, placeholder }: InputProps) => {
+const InputWithLabel = ({
+  configKey,
+  value,
+  label,
+  placeholder,
+}: InputProps) => {
   const { config, setConfig } = useConfig();
 
   return (
@@ -123,14 +124,14 @@ const InputWithLabel = ({ configKey, value, label, placeholder }: InputProps) =>
 
 const styles = StyleSheet.create({
   formContainer: {
-    width: "100%",
+    width: '100%',
     padding: 5,
     borderRadius: 10,
-    display: "flex",
-    flexDirection: "column",
+    display: 'flex',
+    flexDirection: 'column',
   },
   input: {
     borderRadius: 5,
-    width: "100%",
+    width: '100%',
   },
 });

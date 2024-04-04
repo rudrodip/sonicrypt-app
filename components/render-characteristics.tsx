@@ -1,14 +1,15 @@
-import React, { useState, useEffect } from "react";
-import { View, YStack } from "tamagui";
-import { Alert, TouchableOpacity } from "react-native";
-import { Text } from "tamagui";
-import { Service, Characteristic } from "react-native-ble-plx";
-import { useConfig } from "../context/config-context";
-import { useNavigation } from "expo-router";
-import { Toast, useToastController, useToastState } from '@tamagui/toast'
+import { Toast, useToastController, useToastState } from '@tamagui/toast';
+import { useNavigation } from 'expo-router';
+import React, { useEffect, useState } from 'react';
+import { Alert, TouchableOpacity } from 'react-native';
+import { Characteristic, Service } from 'react-native-ble-plx';
+import { View, YStack } from 'tamagui';
+import { Text } from 'tamagui';
+
+import { useConfig } from '../context/config-context';
 
 const RenderCharacteristicsComponent = ({ service }: { service: Service }) => {
-  const toast = useToastController()
+  const toast = useToastController();
   const [characteristics, setCharacteristics] = useState<Characteristic[]>([]);
   const { config, setConfig } = useConfig();
   const [loading, setLoading] = useState(true);
@@ -21,7 +22,7 @@ const RenderCharacteristicsComponent = ({ service }: { service: Service }) => {
         setCharacteristics(characteristics);
         setLoading(false);
       } catch (error) {
-        console.error("Error fetching characteristics:", error);
+        console.error('Error fetching characteristics:', error);
       }
     };
 
@@ -35,11 +36,14 @@ const RenderCharacteristicsComponent = ({ service }: { service: Service }) => {
         onPress={() => {
           setConfig({
             ...config,
-            bleStatus: "connected",
+            bleStatus: 'connected',
             bleServiceUUID: service.uuid,
             bleCharacteristicUUID: item.uuid,
           });
-          toast.show("Characteristic selected", { duration: 1000, native: true })
+          toast.show('Characteristic selected', {
+            duration: 1000,
+            native: true,
+          });
           goBack();
         }}
       >
@@ -68,9 +72,9 @@ const RenderCharacteristicsComponent = ({ service }: { service: Service }) => {
 export default RenderCharacteristicsComponent;
 
 const CurrentToast = () => {
-  const currentToast = useToastState()
+  const currentToast = useToastState();
 
-  if (!currentToast || currentToast.isHandledNatively) return null
+  if (!currentToast || currentToast.isHandledNatively) return null;
   return (
     <Toast
       key={currentToast.id}
@@ -90,5 +94,5 @@ const CurrentToast = () => {
         )}
       </YStack>
     </Toast>
-  )
-}
+  );
+};

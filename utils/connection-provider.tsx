@@ -1,12 +1,13 @@
-import { Connection, type ConnectionConfig } from "@solana/web3.js";
+import { Connection, type ConnectionConfig } from '@solana/web3.js';
 import React, {
   type FC,
   type ReactNode,
-  useMemo,
   createContext,
   useContext,
-} from "react";
-import { useCluster } from "./cluster-data-access";
+  useMemo,
+} from 'react';
+
+import { useCluster } from './cluster-data-access';
 
 export interface ConnectionProviderProps {
   children: ReactNode;
@@ -15,7 +16,7 @@ export interface ConnectionProviderProps {
 
 export const ConnectionProvider: FC<ConnectionProviderProps> = ({
   children,
-  config = { commitment: "confirmed" },
+  config = { commitment: 'confirmed' },
 }) => {
   const { selectedCluster } = useCluster();
 

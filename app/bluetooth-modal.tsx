@@ -1,11 +1,12 @@
-import { ChevronDown } from "@tamagui/lucide-icons";
-import { Accordion, Square, ScrollView, View, Text, Button } from "tamagui";
-import { Alert, PermissionsAndroid, Platform } from "react-native";
-import { BleManager, Device, Service } from "react-native-ble-plx";
-import { useState, useEffect } from "react";
-import { useConfig } from "../context/config-context";
-import RenderCharacteristicsComponent from "../components/render-characteristics";
-import base64 from "react-native-base64";
+import { ChevronDown } from '@tamagui/lucide-icons';
+import { useEffect, useState } from 'react';
+import { Alert, PermissionsAndroid, Platform } from 'react-native';
+import base64 from 'react-native-base64';
+import { BleManager, Device, Service } from 'react-native-ble-plx';
+import { Accordion, Button, ScrollView, Square, Text, View } from 'tamagui';
+
+import RenderCharacteristicsComponent from '../components/render-characteristics';
+import { useConfig } from '../context/config-context';
 
 const bleManager = new BleManager();
 
@@ -19,11 +20,11 @@ export default function ModalScreen() {
 
   useEffect(() => {
     const subscription = bleManager.onStateChange((state) => {
-      if (state === "PoweredOn") {
+      if (state === 'PoweredOn') {
         requestPermissions(() => setIsScanning(true));
-        setConfig({ ...config, bleStatus: "disconnected" });
+        setConfig({ ...config, bleStatus: 'disconnected' });
       } else {
-        Alert.alert("BLE is not enabled");
+        Alert.alert('BLE is not enabled');
       }
     }, true);
 
@@ -62,7 +63,7 @@ export default function ModalScreen() {
     try {
       await device.connect();
       setConnectedDevice(device);
-      setConfig({ ...config, bleStatus: "connected" });
+      setConfig({ ...config, bleStatus: 'connected' });
       setConfig({ ...config, device: device });
 
       await bleManager.connectToDevice(device.id);
@@ -91,10 +92,10 @@ export default function ModalScreen() {
     <ScrollView>
       <Button
         onPress={() => setIsScanning(!isScanning)}
-        backgroundColor={isScanning ? "$accentBackground" : "$color"}
-        color={isScanning ? "$color" : "$accentBackground"}
+        backgroundColor={isScanning ? '$accentBackground' : '$color'}
+        color={isScanning ? '$color' : '$accentBackground'}
       >
-        {isScanning ? "Scanning" : "Scan devices"}
+        {isScanning ? 'Scanning' : 'Scan devices'}
       </Button>
       <Accordion
         overflow="hidden"
@@ -131,12 +132,12 @@ export default function ModalScreen() {
                 {({ open }: { open: boolean }) => (
                   <>
                     <View>
-                      <Text>{device.name || "Anonymous"}</Text>
+                      <Text>{device.name || 'Anonymous'}</Text>
                       <Text fontSize="$1" color="$color075" marginLeft="$1">
                         {device.id}
                       </Text>
                     </View>
-                    <Square animation="quick" rotate={open ? "180deg" : "0deg"}>
+                    <Square animation="quick" rotate={open ? '180deg' : '0deg'}>
                       <ChevronDown size="$1" />
                     </Square>
                   </>
@@ -154,7 +155,7 @@ export default function ModalScreen() {
                           alignItems="center"
                           marginVertical="$2"
                           borderBottomWidth="$0.25"
-                          borderColor={"$color"}
+                          borderColor={'$color'}
                         >
                           <Text fontSize="$3">{service.uuid}</Text>
                           <ChevronDown size="$1" />
@@ -188,12 +189,12 @@ export default function ModalScreen() {
 }
 
 const requestPermissions = async (callback: () => void) => {
-  if (Platform.OS === "ios") {
+  if (Platform.OS === 'ios') {
     callback();
     return true;
   }
   if (
-    Platform.OS === "android" &&
+    Platform.OS === 'android' &&
     PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION
   ) {
     const apiLevel = parseInt(Platform.Version.toString(), 10);
@@ -217,11 +218,11 @@ const requestPermissions = async (callback: () => void) => {
       callback();
 
       return (
-        result["android.permission.BLUETOOTH_CONNECT"] ===
+        result['android.permission.BLUETOOTH_CONNECT'] ===
           PermissionsAndroid.RESULTS.GRANTED &&
-        result["android.permission.BLUETOOTH_SCAN"] ===
+        result['android.permission.BLUETOOTH_SCAN'] ===
           PermissionsAndroid.RESULTS.GRANTED &&
-        result["android.permission.ACCESS_FINE_LOCATION"] ===
+        result['android.permission.ACCESS_FINE_LOCATION'] ===
           PermissionsAndroid.RESULTS.GRANTED
       );
     }
@@ -240,7 +241,7 @@ export const writeToDevice = async (
   try {
     // divide message into chunks
     const messageChunks = message.match(
-      new RegExp(`.{1,${maxMessageLength}}`, "g")
+      new RegExp(`.{1,${maxMessageLength}}`, 'g')
     );
     if (!messageChunks) {
       return;

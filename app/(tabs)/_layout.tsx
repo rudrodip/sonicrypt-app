@@ -1,9 +1,9 @@
-import { Tabs } from 'expo-router'
-import { useTheme } from 'tamagui'
-import { Home, Send, Settings2, Box } from '@tamagui/lucide-icons'
+import { Box, Home, Send, Settings2 } from '@tamagui/lucide-icons';
+import { Tabs } from 'expo-router';
+import { useTheme } from 'tamagui';
 
 export default function TabLayout() {
-  const theme = useTheme()
+  const theme = useTheme();
   return (
     <Tabs
       screenOptions={{
@@ -13,14 +13,14 @@ export default function TabLayout() {
           paddingBottom: 10,
           paddingTop: 10,
           height: 60,
-        }
+        },
       }}
     >
       <Tabs.Screen
         name="index"
         options={{
           headerShown: false,
-          title: "Home",
+          title: 'Home',
           tabBarIcon: ({ color }) => <Home color={color}>Home</Home>,
         }}
       />
@@ -42,10 +42,10 @@ export default function TabLayout() {
         name="emulate"
         options={{
           headerShown: false,
-          title: "Emulator",
+          title: 'Emulator',
           tabBarIcon: ({ color }) => <Box color={color}>Emulate</Box>,
         }}
       />
     </Tabs>
-  )
+  );
 }

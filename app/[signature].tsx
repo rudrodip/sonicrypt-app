@@ -1,7 +1,7 @@
-import { useLocalSearchParams } from "expo-router";
-import { WebView } from "react-native-webview";
-import { Progress, View } from "tamagui";
-import { useState } from "react";
+import { useLocalSearchParams } from 'expo-router';
+import { useState } from 'react';
+import { WebView } from 'react-native-webview';
+import { Progress, View } from 'tamagui';
 
 export default function Page() {
   const { signature, network } = useLocalSearchParams();
